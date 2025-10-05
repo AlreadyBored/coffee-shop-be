@@ -1,0 +1,1229 @@
+[
+    {
+        "name": "Irish coffee",
+        "description": "Fragrant black coffee with Jameson Irish whiskey and whipped milk",
+        "price": "7.00",
+        "discountPrice": "6.75",
+        "category": "coffee",
+        "id": 1,
+        "sizes": {
+            "s": {
+                "size": "200 ml",
+                "price": "7.00"
+            },
+            "m": {
+                "size": "300 ml",
+                "price": "8.50",
+                "discountPrice": "8.25"
+            },
+            "l": {
+                "size": "400 ml",
+                "price": "10.00"
+            },
+            "xl": {
+                "size": "500 ml",
+                "price": "11.50",
+                "discountPrice": "11.00"
+            },
+            "xxl": {
+                "size": "600 ml",
+                "price": "13.00"
+            }
+        },
+        "additives": [
+            {
+                "name": "Sugar",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Cinnamon",
+                "price": "0.50"
+            },
+            {
+                "name": "Syrup",
+                "price": "0.70",
+                "discountPrice": "0.65"
+            }
+        ]
+    },
+    {
+        "name": "Kahlua coffee",
+        "description": "Classic coffee with milk and Kahlua liqueur under a cap of frothed milk",
+        "price": "7.00",
+        "discountPrice": "6.75",
+        "category": "coffee",
+        "id": 2,
+        "sizes": {
+            "s": {
+                "size": "200 ml",
+                "price": "7.00",
+                "discountPrice": "6.75"
+            },
+            "m": {
+                "size": "300 ml",
+                "price": "8.50"
+            },
+            "l": {
+                "size": "400 ml",
+                "price": "10.00",
+                "discountPrice": "9.75"
+            },
+            "xl": {
+                "size": "500 ml",
+                "price": "11.50"
+            }
+        },
+        "additives": [
+            {
+                "name": "Sugar",
+                "price": "0.50"
+            },
+            {
+                "name": "Cinnamon",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Syrup",
+                "price": "0.70"
+            }
+        ]
+    },
+    {
+        "name": "Honey raf",
+        "description": "Espresso with frothed milk, cream and aromatic honey",
+        "price": "5.50",
+        "discountPrice": "5.25",
+        "category": "coffee",
+        "id": 3,
+        "sizes": {
+            "s": {
+                "size": "200 ml",
+                "price": "5.50"
+            },
+            "m": {
+                "size": "300 ml",
+                "price": "6.00",
+                "discountPrice": "5.75"
+            },
+            "l": {
+                "size": "400 ml",
+                "price": "6.50"
+            },
+            "xxl": {
+                "size": "600 ml",
+                "price": "8.00",
+                "discountPrice": "7.75"
+            }
+        },
+        "additives": [
+            {
+                "name": "Sugar",
+                "price": "0.50"
+            },
+            {
+                "name": "Cinnamon",
+                "price": "0.50"
+            },
+            {
+                "name": "Syrup",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            }
+        ]
+    },
+    {
+        "name": "Ice cappuccino",
+        "description": "Cappuccino with soft thick foam in summer version with ice",
+        "price": "5.00",
+        "discountPrice": "4.75",
+        "category": "coffee",
+        "id": 4,
+        "sizes": {
+            "s": {
+                "size": "200 ml",
+                "price": "5.00",
+                "discountPrice": "4.75"
+            },
+            "m": {
+                "size": "300 ml",
+                "price": "5.50"
+            },
+            "l": {
+                "size": "400 ml",
+                "price": "6.00",
+                "discountPrice": "5.75"
+            },
+            "xl": {
+                "size": "500 ml",
+                "price": "7.00"
+            }
+        },
+        "additives": [
+            {
+                "name": "Sugar",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Cinnamon",
+                "price": "0.50"
+            },
+            {
+                "name": "Syrup",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Espresso",
+        "description": "Classic black coffee",
+        "price": "4.50",
+        "discountPrice": "4.25",
+        "category": "coffee",
+        "id": 5,
+        "sizes": {
+            "s": {
+                "size": "200 ml",
+                "price": "4.50"
+            },
+            "m": {
+                "size": "300 ml",
+                "price": "5.00",
+                "discountPrice": "4.75"
+            },
+            "l": {
+                "size": "400 ml",
+                "price": "5.50"
+            }
+        },
+        "additives": [
+            {
+                "name": "Sugar",
+                "price": "0.50"
+            },
+            {
+                "name": "Cinnamon",
+                "price": "0.50"
+            },
+            {
+                "name": "Syrup",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            }
+        ]
+    },
+    {
+        "name": "Latte",
+        "description": "Espresso coffee with the addition of steamed milk and dense milk foam",
+        "price": "5.50",
+        "discountPrice": "5.25",
+        "category": "coffee",
+        "id": 6,
+        "sizes": {
+            "s": {
+                "size": "200 ml",
+                "price": "5.50",
+                "discountPrice": "5.25"
+            },
+            "m": {
+                "size": "300 ml",
+                "price": "6.00"
+            },
+            "l": {
+                "size": "400 ml",
+                "price": "6.50",
+                "discountPrice": "6.25"
+            },
+            "xl": {
+                "size": "500 ml",
+                "price": "7.50"
+            }
+        },
+        "additives": [
+            {
+                "name": "Sugar",
+                "price": "0.50"
+            },
+            {
+                "name": "Cinnamon",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Syrup",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Latte macchiato",
+        "description": "Espresso with frothed milk and chocolate",
+        "price": "5.50",
+        "discountPrice": "5.25",
+        "category": "coffee",
+        "id": 7,
+        "sizes": {
+            "s": {
+                "size": "200 ml",
+                "price": "5.50"
+            },
+            "m": {
+                "size": "300 ml",
+                "price": "6.00",
+                "discountPrice": "5.75"
+            },
+            "l": {
+                "size": "400 ml",
+                "price": "6.50"
+            }
+        },
+        "additives": [
+            {
+                "name": "Sugar",
+                "price": "0.50"
+            },
+            {
+                "name": "Cinnamon",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Syrup",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Coffee with cognac",
+        "description": "Fragrant black coffee with cognac and whipped cream",
+        "price": "6.50",
+        "discountPrice": "6.25",
+        "category": "coffee",
+        "id": 8,
+        "sizes": {
+            "s": {
+                "size": "200 ml",
+                "price": "6.50",
+                "discountPrice": "6.25"
+            },
+            "m": {
+                "size": "300 ml",
+                "price": "7.00"
+            },
+            "l": {
+                "size": "400 ml",
+                "price": "7.50",
+                "discountPrice": "7.25"
+            },
+            "xl": {
+                "size": "500 ml",
+                "price": "8.50"
+            }
+        },
+        "additives": [
+            {
+                "name": "Sugar",
+                "price": "0.50"
+            },
+            {
+                "name": "Cinnamon",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Syrup",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Moroccan",
+        "description": "Fragrant black tea with the addition of tangerine, cinnamon, honey, lemon and mint",
+        "price": "4.50",
+        "discountPrice": "4.25",
+        "category": "tea",
+        "id": 9,
+        "sizes": {
+            "s": {
+                "size": "200 ml",
+                "price": "4.50",
+                "discountPrice": "4.25"
+            },
+            "m": {
+                "size": "300 ml",
+                "price": "5.00",
+                "discountPrice": "4.75"
+            },
+            "l": {
+                "size": "400 ml",
+                "price": "5.50",
+                "discountPrice": "5.25"
+            }
+        },
+        "additives": [
+            {
+                "name": "Sugar",
+                "price": "0.50"
+            },
+            {
+                "name": "Lemon",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Syrup",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Ginger",
+        "description": "Original black tea with fresh ginger, lemon and honey",
+        "price": "5.00",
+        "category": "tea",
+        "id": 10,
+        "sizes": {
+            "s": {
+                "size": "200 ml",
+                "price": "5.00",
+                "discountPrice": "4.75"
+            },
+            "m": {
+                "size": "300 ml",
+                "price": "5.50",
+                "discountPrice": "5.25"
+            },
+            "l": {
+                "size": "400 ml",
+                "price": "6.00",
+                "discountPrice": "5.75"
+            }
+        },
+        "additives": [
+            {
+                "name": "Sugar",
+                "price": "0.50"
+            },
+            {
+                "name": "Lemon",
+                "price": "0.50"
+            },
+            {
+                "name": "Syrup",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            }
+        ]
+    },
+    {
+        "name": "Cranberry",
+        "description": "Invigorating black tea with cranberry and honey",
+        "price": "5.00",
+        "category": "tea",
+        "id": 11,
+        "sizes": {
+            "s": {
+                "size": "200 ml",
+                "price": "5.00",
+                "discountPrice": "4.75"
+            },
+            "m": {
+                "size": "300 ml",
+                "price": "5.50",
+                "discountPrice": "5.25"
+            },
+            "l": {
+                "size": "400 ml",
+                "price": "6.00",
+                "discountPrice": "5.75"
+            }
+        },
+        "additives": [
+            {
+                "name": "Sugar",
+                "price": "0.50"
+            },
+            {
+                "name": "Lemon",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Syrup",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Sea buckthorn",
+        "description": "Toning sweet black tea with sea buckthorn, fresh thyme and cinnamon",
+        "price": "5.50",
+        "category": "tea",
+        "id": 12,
+        "sizes": {
+            "s": {
+                "size": "200 ml",
+                "price": "5.50"
+            },
+            "m": {
+                "size": "300 ml",
+                "price": "6.00",
+                "discountPrice": "5.75"
+            },
+            "l": {
+                "size": "400 ml",
+                "price": "6.50",
+                "discountPrice": "6.25"
+            }
+        },
+        "additives": [
+            {
+                "name": "Sugar",
+                "price": "0.50"
+            },
+            {
+                "name": "Lemon",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Syrup",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "English Breakfast",
+        "description": "Classic strong black tea blend",
+        "price": "4.00",
+        "discountPrice": "3.75",
+        "category": "tea",
+        "id": 21,
+        "sizes": {
+            "s": {
+                "size": "200 ml",
+                "price": "4.00"
+            },
+            "m": {
+                "size": "300 ml",
+                "price": "4.50",
+                "discountPrice": "4.25"
+            },
+            "l": {
+                "size": "400 ml",
+                "price": "5.00"
+            }
+        },
+        "additives": [
+            {
+                "name": "Sugar",
+                "price": "0.50"
+            },
+            {
+                "name": "Lemon",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Green Jasmine",
+        "description": "Green tea with jasmine flowers",
+        "price": "4.50",
+        "discountPrice": "4.25",
+        "category": "tea",
+        "id": 22,
+        "sizes": {
+            "s": {
+                "size": "200 ml",
+                "price": "4.50"
+            },
+            "m": {
+                "size": "300 ml",
+                "price": "5.00",
+                "discountPrice": "4.75"
+            },
+            "l": {
+                "size": "400 ml",
+                "price": "5.50"
+            }
+        },
+        "additives": [
+            {
+                "name": "Sugar",
+                "price": "0.50"
+            },
+            {
+                "name": "Lemon",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            }
+        ]
+    },
+    {
+        "name": "Mint",
+        "description": "Refreshing herbal tea with mint leaves",
+        "price": "4.00",
+        "category": "tea",
+        "id": 23,
+        "discountPrice": "3.75",
+        "sizes": {
+            "s": {
+                "size": "200 ml",
+                "price": "4.00"
+            },
+            "m": {
+                "size": "300 ml",
+                "price": "4.50"
+            },
+            "l": {
+                "size": "400 ml",
+                "price": "5.00",
+                "discountPrice": "4.75"
+            }
+        },
+        "additives": [
+            {
+                "name": "Sugar",
+                "price": "0.50"
+            },
+            {
+                "name": "Syrup",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Chamomile",
+        "description": "Soothing chamomile herbal tea",
+        "price": "4.00",
+        "category": "tea",
+        "id": 24,
+        "discountPrice": "3.75",
+        "sizes": {
+            "s": {
+                "size": "200 ml",
+                "price": "4.00"
+            },
+            "m": {
+                "size": "300 ml",
+                "price": "4.50",
+                "discountPrice": "4.25"
+            },
+            "l": {
+                "size": "400 ml",
+                "price": "5.00"
+            }
+        },
+        "additives": [
+            {
+                "name": "Sugar",
+                "price": "0.50"
+            },
+            {
+                "name": "Lemon",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Marble cheesecake",
+        "description": "Philadelphia cheese with lemon zest on a light sponge cake and red currant jam",
+        "price": "3.50",
+        "discountPrice": "3.25",
+        "category": "dessert",
+        "id": 13,
+        "sizes": {
+            "s": {
+                "size": "50 g",
+                "price": "3.50",
+                "discountPrice": "3.25"
+            },
+            "m": {
+                "size": "100 g",
+                "price": "4.00",
+                "discountPrice": "3.75"
+            },
+            "l": {
+                "size": "200 g",
+                "price": "4.50",
+                "discountPrice": "4.25"
+            },
+            "xl": {
+                "size": "300 g",
+                "price": "5.50"
+            }
+        },
+        "additives": [
+            {
+                "name": "Berries",
+                "price": "0.50"
+            },
+            {
+                "name": "Nuts",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Jam",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Red velvet",
+        "description": "Layer cake with cream cheese frosting",
+        "price": "4.00",
+        "category": "dessert",
+        "id": 14,
+        "sizes": {
+            "s": {
+                "size": "50 g",
+                "price": "4.00",
+                "discountPrice": "3.75"
+            },
+            "m": {
+                "size": "100 g",
+                "price": "4.50",
+                "discountPrice": "4.25"
+            },
+            "l": {
+                "size": "200 g",
+                "price": "5.00",
+                "discountPrice": "4.75"
+            },
+            "xl": {
+                "size": "300 g",
+                "price": "6.00"
+            }
+        },
+        "additives": [
+            {
+                "name": "Berries",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Nuts",
+                "price": "0.50"
+            },
+            {
+                "name": "Jam",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Cheesecakes",
+        "description": "Soft cottage cheese pancakes with sour cream and fresh berries and sprinkled with powdered sugar",
+        "price": "4.50",
+        "category": "dessert",
+        "id": 15,
+        "sizes": {
+            "s": {
+                "size": "50 g",
+                "price": "4.50",
+                "discountPrice": "4.25"
+            },
+            "m": {
+                "size": "100 g",
+                "price": "5.00",
+                "discountPrice": "4.75"
+            },
+            "l": {
+                "size": "200 g",
+                "price": "5.50",
+                "discountPrice": "5.25"
+            },
+            "xl": {
+                "size": "300 g",
+                "price": "6.00"
+            }
+        },
+        "additives": [
+            {
+                "name": "Berries",
+                "price": "0.50"
+            },
+            {
+                "name": "Nuts",
+                "price": "0.50"
+            },
+            {
+                "name": "Jam",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            }
+        ]
+    },
+    {
+        "name": "Creme brulee",
+        "description": "Delicate creamy dessert in a caramel basket with wild berries",
+        "price": "4.00",
+        "category": "dessert",
+        "id": 16,
+        "sizes": {
+            "s": {
+                "size": "50 g",
+                "price": "4.00",
+                "discountPrice": "3.75"
+            },
+            "m": {
+                "size": "100 g",
+                "price": "4.50",
+                "discountPrice": "4.25"
+            },
+            "l": {
+                "size": "200 g",
+                "price": "5.00",
+                "discountPrice": "4.75"
+            },
+            "xl": {
+                "size": "300 g",
+                "price": "6.00"
+            }
+        },
+        "additives": [
+            {
+                "name": "Berries",
+                "price": "0.50"
+            },
+            {
+                "name": "Nuts",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Jam",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Pancakes",
+        "description": "Tender pancakes with strawberry jam and fresh strawberries",
+        "price": "4.50",
+        "category": "dessert",
+        "id": 17,
+        "sizes": {
+            "s": {
+                "size": "50 g",
+                "price": "4.50",
+                "discountPrice": "4.25"
+            },
+            "m": {
+                "size": "100 g",
+                "price": "5.00",
+                "discountPrice": "4.75"
+            },
+            "l": {
+                "size": "200 g",
+                "price": "5.50",
+                "discountPrice": "5.25"
+            },
+            "xl": {
+                "size": "300 g",
+                "price": "6.00"
+            }
+        },
+        "additives": [
+            {
+                "name": "Berries",
+                "price": "0.50"
+            },
+            {
+                "name": "Nuts",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Jam",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Honey cake",
+        "description": "Classic honey cake with delicate custard",
+        "price": "4.50",
+        "category": "dessert",
+        "id": 18,
+        "sizes": {
+            "s": {
+                "size": "50 g",
+                "price": "4.50"
+            },
+            "m": {
+                "size": "100 g",
+                "price": "5.00",
+                "discountPrice": "4.75"
+            },
+            "l": {
+                "size": "200 g",
+                "price": "5.50"
+            }
+        },
+        "additives": [
+            {
+                "name": "Berries",
+                "price": "0.50"
+            },
+            {
+                "name": "Nuts",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Jam",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Chocolate cake",
+        "description": "Cake with hot chocolate filling and nuts with dried apricots",
+        "price": "5.50",
+        "category": "dessert",
+        "id": 19,
+        "sizes": {
+            "s": {
+                "size": "50 g",
+                "price": "5.50",
+                "discountPrice": "5.25"
+            },
+            "m": {
+                "size": "100 g",
+                "price": "6.00",
+                "discountPrice": "5.75"
+            },
+            "l": {
+                "size": "200 g",
+                "price": "6.50"
+            }
+        },
+        "additives": [
+            {
+                "name": "Berries",
+                "price": "0.50"
+            },
+            {
+                "name": "Nuts",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Jam",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Black forest",
+        "description": "A combination of thin sponge cake with cherry jam and light chocolate mousse",
+        "price": "6.50",
+        "category": "dessert",
+        "id": 20,
+        "sizes": {
+            "s": {
+                "size": "50 g",
+                "price": "6.50",
+                "discountPrice": "6.25"
+            },
+            "m": {
+                "size": "100 g",
+                "price": "7.00",
+                "discountPrice": "6.75"
+            },
+            "l": {
+                "size": "200 g",
+                "price": "7.50",
+                "discountPrice": "7.25"
+            }
+        },
+        "additives": [
+            {
+                "name": "Berries",
+                "price": "0.50"
+            },
+            {
+                "name": "Nuts",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Jam",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Apple pie",
+        "description": "Classic apple pie with cinnamon",
+        "price": "4.00",
+        "category": "dessert",
+        "id": 25,
+        "discountPrice": "3.75",
+        "sizes": {
+            "s": {
+                "size": "50 g",
+                "price": "4.00"
+            },
+            "m": {
+                "size": "100 g",
+                "price": "4.50",
+                "discountPrice": "4.25"
+            },
+            "l": {
+                "size": "200 g",
+                "price": "5.00"
+            }
+        },
+        "additives": [
+            {
+                "name": "Berries",
+                "price": "0.50"
+            },
+            {
+                "name": "Nuts",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Fruit tart",
+        "description": "Shortcrust pastry tart with fresh fruits",
+        "price": "5.00",
+        "category": "dessert",
+        "id": 26,
+        "discountPrice": "4.75",
+        "sizes": {
+            "s": {
+                "size": "50 g",
+                "price": "5.00"
+            },
+            "m": {
+                "size": "100 g",
+                "price": "5.50",
+                "discountPrice": "5.25"
+            },
+            "l": {
+                "size": "200 g",
+                "price": "6.00"
+            }
+        },
+        "additives": [
+            {
+                "name": "Berries",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Jam",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Lemon mousse",
+        "description": "Light lemon mousse with whipped cream",
+        "price": "4.50",
+        "category": "dessert",
+        "id": 27,
+        "discountPrice": "4.25",
+        "sizes": {
+            "s": {
+                "size": "50 g",
+                "price": "4.50"
+            },
+            "m": {
+                "size": "100 g",
+                "price": "5.00"
+            },
+            "l": {
+                "size": "200 g",
+                "price": "5.50",
+                "discountPrice": "5.25"
+            }
+        },
+        "additives": [
+            {
+                "name": "Berries",
+                "price": "0.50"
+            },
+            {
+                "name": "Jam",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Brownie",
+        "description": "Rich chocolate brownie with walnuts",
+        "price": "5.00",
+        "category": "dessert",
+        "id": 28,
+        "discountPrice": "4.75",
+        "sizes": {
+            "s": {
+                "size": "50 g",
+                "price": "5.00"
+            },
+            "m": {
+                "size": "100 g",
+                "price": "5.50",
+                "discountPrice": "5.25"
+            },
+            "l": {
+                "size": "200 g",
+                "price": "6.00"
+            }
+        },
+        "additives": [
+            {
+                "name": "Nuts",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Jam",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Jasmine Pearl",
+        "description": "Delicate green tea rolled into pearls with jasmine aroma",
+        "price": "5.00",
+        "category": "tea",
+        "id": 29,
+        "discountPrice": "4.75",
+        "sizes": {
+            "s": {
+                "size": "200 ml",
+                "price": "5.00"
+            },
+            "m": {
+                "size": "300 ml",
+                "price": "5.50"
+            },
+            "l": {
+                "size": "400 ml",
+                "price": "6.00",
+                "discountPrice": "5.75"
+            }
+        },
+        "additives": [
+            {
+                "name": "Sugar",
+                "price": "0.50"
+            },
+            {
+                "name": "Lemon",
+                "price": "0.50"
+            }
+        ]
+    },
+    {
+        "name": "Berry Hibiscus",
+        "description": "Fruit tea with hibiscus and mixed berries",
+        "price": "5.50",
+        "category": "tea",
+        "id": 30,
+        "discountPrice": "5.25",
+        "sizes": {
+            "s": {
+                "size": "200 ml",
+                "price": "5.50"
+            },
+            "m": {
+                "size": "300 ml",
+                "price": "6.00",
+                "discountPrice": "5.75"
+            },
+            "l": {
+                "size": "400 ml",
+                "price": "6.50"
+            }
+        },
+        "additives": [
+            {
+                "name": "Sugar",
+                "price": "0.50"
+            },
+            {
+                "name": "Syrup",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            }
+        ]
+    },
+    {
+        "name": "Tiramisu",
+        "description": "Classic Italian dessert with coffee-soaked ladyfingers and mascarpone",
+        "price": "5.50",
+        "category": "dessert",
+        "id": 31,
+        "discountPrice": "5.25",
+        "sizes": {
+            "s": {
+                "size": "50 g",
+                "price": "5.50"
+            },
+            "m": {
+                "size": "100 g",
+                "price": "6.00",
+                "discountPrice": "5.75"
+            },
+            "l": {
+                "size": "200 g",
+                "price": "6.50"
+            }
+        },
+        "additives": [
+            {
+                "name": "Berries",
+                "price": "0.50"
+            },
+            {
+                "name": "Jam",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            }
+        ]
+    },
+    {
+        "name": "Pavlova",
+        "description": "Crispy meringue dessert with whipped cream and fresh fruit",
+        "price": "5.00",
+        "category": "dessert",
+        "id": 32,
+        "discountPrice": "4.75",
+        "sizes": {
+            "s": {
+                "size": "50 g",
+                "price": "5.00"
+            },
+            "m": {
+                "size": "100 g",
+                "price": "5.50"
+            },
+            "l": {
+                "size": "200 g",
+                "price": "6.00",
+                "discountPrice": "5.75"
+            }
+        },
+        "additives": [
+            {
+                "name": "Berries",
+                "price": "0.50",
+                "discountPrice": "0.45"
+            },
+            {
+                "name": "Nuts",
+                "price": "0.50"
+            }
+        ]
+    }
+]
