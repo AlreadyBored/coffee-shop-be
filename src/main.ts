@@ -61,7 +61,9 @@ async function bootstrap() {
   await app.listen(port);
   console.log(`🚀 Application is running on: http://localhost:${port}`);
   if (swaggerEnabled) {
-    console.log(`📚 Swagger UI is available at: http://localhost:${port}/${swaggerPath}`);
+    console.log(
+      `📚 Swagger UI is available at: http://localhost:${port}/${swaggerPath}`,
+    );
   }
 }
 bootstrap();
