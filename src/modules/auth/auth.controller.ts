@@ -31,7 +31,6 @@ export class AuthController {
     try {
       const result = await this.authService.register(registerDto);
       return {
-        success: true,
         data: result,
         message: 'User registered successfully',
       };
@@ -39,7 +38,6 @@ export class AuthController {
       if (error.status === 400 || error.status === 409) {
         throw new HttpException(
           {
-            success: false,
             error: error.message,
           },
           error.status,
@@ -47,7 +45,6 @@ export class AuthController {
       }
       throw new HttpException(
         {
-          success: false,
           error: 'Registration failed',
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -68,7 +65,6 @@ export class AuthController {
     try {
       const result = await this.authService.login(loginDto);
       return {
-        success: true,
         data: result,
         message: 'Login successful',
       };
@@ -76,7 +72,6 @@ export class AuthController {
       if (error.status === 401) {
         throw new HttpException(
           {
-            success: false,
             error: error.message,
           },
           error.status,
@@ -84,7 +79,6 @@ export class AuthController {
       }
       throw new HttpException(
         {
-          success: false,
           error: 'Login failed',
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -103,13 +97,11 @@ export class AuthController {
   ): Promise<ApiResponse<Omit<User, 'password'>>> {
     try {
       return {
-        success: true,
         data: req.user,
       };
     } catch (error) {
       throw new HttpException(
         {
-          success: false,
           error: 'Failed to fetch profile',
         },
         HttpStatus.INTERNAL_SERVER_ERROR,

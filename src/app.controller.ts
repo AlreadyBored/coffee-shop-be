@@ -9,7 +9,6 @@ export class AppController {
   @Get()
   getHello(): ApiResponse<any> {
     return {
-      success: true,
       message: 'Coffee House API is running!',
       data: {
         version: '1.0.0',

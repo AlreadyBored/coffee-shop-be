@@ -26,14 +26,12 @@ export class ProductsController {
     try {
       const products = await this.productsService.getRandomCoffeeProducts();
       return {
-        success: true,
         data: products,
       };
     } catch (error) {
       console.error('Error fetching favorite products:', error);
       throw new HttpException(
         {
-          success: false,
           error: 'Failed to fetch favorite products',
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -50,13 +48,11 @@ export class ProductsController {
     try {
       const products = await this.productsService.getAllProducts();
       return {
-        success: true,
         data: products,
       };
     } catch (error) {
       throw new HttpException(
         {
-          success: false,
           error: 'Failed to fetch products',
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -75,14 +71,12 @@ export class ProductsController {
     try {
       const product = await this.productsService.getProductById(id);
       return {
-        success: true,
         data: product,
       };
     } catch (error) {
       if (error.status === 404) {
         throw new HttpException(
           {
-            success: false,
             error: error.message,
           },
           HttpStatus.NOT_FOUND,
@@ -90,7 +84,6 @@ export class ProductsController {
       }
       throw new HttpException(
         {
-          success: false,
           error: 'Failed to fetch product',
         },
         HttpStatus.INTERNAL_SERVER_ERROR,

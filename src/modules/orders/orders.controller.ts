@@ -45,13 +45,11 @@ export class OrdersController {
       );
 
       return {
-        success: true,
         data: result,
       };
     } catch (error) {
       throw new HttpException(
         {
-          success: false,
           error: 'Failed to confirm order',
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -76,13 +74,11 @@ export class OrdersController {
       );
 
       return {
-        success: true,
         data: result,
       };
     } catch (error) {
       throw new HttpException(
         {
-          success: false,
           error: 'Failed to confirm order',
         },
         HttpStatus.INTERNAL_SERVER_ERROR,

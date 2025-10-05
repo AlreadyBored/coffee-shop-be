@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ProductsService } from '../../modules/products/products.service';
 import { Product } from '../../entities/product.entity';
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 @Injectable()
 export class SeedService {
@@ -30,11 +30,11 @@ export class SeedService {
         return;
       }
 
-      const productsData = fs.readFileSync(productsFilePath, 'utf8');
+      const productsData = await fs.promises.readFile(productsFilePath, 'utf8');
       const products = JSON.parse(productsData);
 
       if (!Array.isArray(products)) {
-        this.logger.error('Products data is not an array');
+        this.logger.error('Products data is invalid');
         return;
       }
 
