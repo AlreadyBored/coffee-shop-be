@@ -1,6 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ProductsService } from '../../modules/products/products.service';
 import { Product } from '../../entities/product.entity';
+import {
+  JsonProductsData,
+  JsonProduct,
+} from '../interfaces/json-data.interfaces';
+import { safeJsonParse } from '../utils/json.utils';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
@@ -31,15 +36,15 @@ export class SeedService {
       }
 
       const productsData = await fs.promises.readFile(productsFilePath, 'utf8');
-      const products = JSON.parse(productsData);
+      const products = safeJsonParse<JsonProductsData>(productsData);
 
-      if (!Array.isArray(products)) {
-        this.logger.error('Products data is invalid');
+      if (!products || !Array.isArray(products)) {
+        this.logger.error('Products data is invalid or failed to parse');
         return;
       }
 
       const transformedProducts: Partial<Product>[] = products.map(
-        (product: any) => ({
+        (product: JsonProduct) => ({
           name: product.name,
           description: product.description,
           price: product.price,
