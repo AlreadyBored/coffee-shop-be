@@ -6,6 +6,12 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse as SwaggerApiResponse,
+  ApiParam,
+} from '@nestjs/swagger';
 import { ProductsService } from './products.service';
 import { Product } from '../../entities/product.entity';
 import {
@@ -13,6 +19,7 @@ import {
   ProductListItem,
 } from '../../common/interfaces/api.interfaces';
 
+@ApiTags('Products')
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
@@ -22,6 +29,33 @@ export class ProductsController {
    * Get 3 random products from coffee category for main page
    */
   @Get('favorites')
+  @ApiOperation({ summary: 'Get favorite coffee products for main page' })
+  @SwaggerApiResponse({
+    status: 200,
+    description: 'Favorite products retrieved successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'number' },
+              name: { type: 'string' },
+              description: { type: 'string' },
+              price: { type: 'string' },
+              discountPrice: { type: 'string', nullable: true },
+              category: { type: 'string' },
+              sizes: { type: 'object' },
+              additives: { type: 'array' },
+            },
+          },
+        },
+      },
+    },
+  })
+  @SwaggerApiResponse({ status: 500, description: 'Internal server error' })
   async getFavoriteProducts(): Promise<ApiResponse<Product[]>> {
     try {
       const products = await this.productsService.getRandomCoffeeProducts();
@@ -44,6 +78,31 @@ export class ProductsController {
    * Get all products without sizes and additives fields for menu page
    */
   @Get()
+  @ApiOperation({ summary: 'Get all products for menu page' })
+  @SwaggerApiResponse({
+    status: 200,
+    description: 'Products retrieved successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'number' },
+              name: { type: 'string' },
+              description: { type: 'string' },
+              price: { type: 'string' },
+              discountPrice: { type: 'string', nullable: true },
+              category: { type: 'string' },
+            },
+          },
+        },
+      },
+    },
+  })
+  @SwaggerApiResponse({ status: 500, description: 'Internal server error' })
   async getAllProducts(): Promise<ApiResponse<ProductListItem[]>> {
     try {
       const products = await this.productsService.getAllProducts();
@@ -65,6 +124,32 @@ export class ProductsController {
    * Get full data of one product by ID for modal window
    */
   @Get(':id')
+  @ApiOperation({ summary: 'Get product by ID' })
+  @ApiParam({ name: 'id', type: 'number', description: 'Product ID' })
+  @SwaggerApiResponse({
+    status: 200,
+    description: 'Product retrieved successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            id: { type: 'number' },
+            name: { type: 'string' },
+            description: { type: 'string' },
+            price: { type: 'string' },
+            discountPrice: { type: 'string', nullable: true },
+            category: { type: 'string' },
+            sizes: { type: 'object' },
+            additives: { type: 'array' },
+          },
+        },
+      },
+    },
+  })
+  @SwaggerApiResponse({ status: 404, description: 'Product not found' })
+  @SwaggerApiResponse({ status: 500, description: 'Internal server error' })
   async getProductById(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<ApiResponse<Product>> {

@@ -8,12 +8,20 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse as SwaggerApiResponse,
+  ApiBearerAuth,
+  ApiBody,
+} from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto } from '../../common/dto/auth.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { ApiResponse } from '../../common/interfaces/api.interfaces';
 import { User } from '../../entities/user.entity';
 
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -23,6 +31,38 @@ export class AuthController {
    * Register new user
    */
   @Post('register')
+  @ApiOperation({ summary: 'Register new user' })
+  @ApiBody({ type: RegisterDto })
+  @SwaggerApiResponse({
+    status: 201,
+    description: 'User registered successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            access_token: { type: 'string' },
+            user: {
+              type: 'object',
+              properties: {
+                id: { type: 'number' },
+                login: { type: 'string' },
+                city: { type: 'string' },
+                street: { type: 'string' },
+                houseNumber: { type: 'string' },
+                paymentMethod: { type: 'string' },
+                createdAt: { type: 'string', format: 'date-time' },
+              },
+            },
+          },
+        },
+        message: { type: 'string' },
+      },
+    },
+  })
+  @SwaggerApiResponse({ status: 400, description: 'Bad request' })
+  @SwaggerApiResponse({ status: 409, description: 'User already exists' })
   async register(
     @Body() registerDto: RegisterDto,
   ): Promise<
@@ -57,6 +97,37 @@ export class AuthController {
    * User login
    */
   @Post('login')
+  @ApiOperation({ summary: 'User login' })
+  @ApiBody({ type: LoginDto })
+  @SwaggerApiResponse({
+    status: 200,
+    description: 'Login successful',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            access_token: { type: 'string' },
+            user: {
+              type: 'object',
+              properties: {
+                id: { type: 'number' },
+                login: { type: 'string' },
+                city: { type: 'string' },
+                street: { type: 'string' },
+                houseNumber: { type: 'string' },
+                paymentMethod: { type: 'string' },
+                createdAt: { type: 'string', format: 'date-time' },
+              },
+            },
+          },
+        },
+        message: { type: 'string' },
+      },
+    },
+  })
+  @SwaggerApiResponse({ status: 401, description: 'Invalid credentials' })
   async login(
     @Body() loginDto: LoginDto,
   ): Promise<
@@ -92,6 +163,30 @@ export class AuthController {
    */
   @Get('profile')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ summary: 'Get current user profile' })
+  @SwaggerApiResponse({
+    status: 200,
+    description: 'Profile retrieved successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            id: { type: 'number' },
+            login: { type: 'string' },
+            city: { type: 'string' },
+            street: { type: 'string' },
+            houseNumber: { type: 'string' },
+            paymentMethod: { type: 'string' },
+            createdAt: { type: 'string', format: 'date-time' },
+          },
+        },
+      },
+    },
+  })
+  @SwaggerApiResponse({ status: 401, description: 'Unauthorized' })
   async getProfile(
     @Request() req,
   ): Promise<ApiResponse<Omit<User, 'password'>>> {

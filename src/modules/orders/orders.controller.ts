@@ -7,16 +7,43 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse as SwaggerApiResponse,
+  ApiBearerAuth,
+  ApiBody,
+} from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from '../../common/dto/order.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ApiResponse } from '../../common/interfaces/api.interfaces';
 
+@ApiTags('Orders')
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post('confirm')
+  @ApiOperation({ summary: 'Confirm order (anonymous or authenticated)' })
+  @ApiBody({ type: CreateOrderDto })
+  @SwaggerApiResponse({
+    status: 201,
+    description: 'Order confirmed successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            message: { type: 'string' },
+            orderId: { type: 'string' },
+          },
+        },
+      },
+    },
+  })
+  @SwaggerApiResponse({ status: 500, description: 'Internal server error' })
   async confirmOrder(
     @Body() createOrderDto: CreateOrderDto,
     @Request() req,
@@ -63,6 +90,27 @@ export class OrdersController {
    */
   @Post('confirm-auth')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ summary: 'Confirm order (authenticated users only)' })
+  @ApiBody({ type: CreateOrderDto })
+  @SwaggerApiResponse({
+    status: 201,
+    description: 'Order confirmed successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            message: { type: 'string' },
+            orderId: { type: 'string' },
+          },
+        },
+      },
+    },
+  })
+  @SwaggerApiResponse({ status: 401, description: 'Unauthorized' })
+  @SwaggerApiResponse({ status: 500, description: 'Internal server error' })
   async confirmOrderAuth(
     @Body() createOrderDto: CreateOrderDto,
     @Request() req,

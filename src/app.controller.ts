@@ -1,12 +1,36 @@
 import { Controller, Get } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse as SwaggerApiResponse,
+} from '@nestjs/swagger';
 import { AppService } from './app.service';
 import { ApiResponse } from './common/interfaces/api.interfaces';
 
+@ApiTags('App')
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
+  @ApiOperation({ summary: 'Get API information' })
+  @SwaggerApiResponse({
+    status: 200,
+    description: 'API information retrieved successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string' },
+        data: {
+          type: 'object',
+          properties: {
+            version: { type: 'string' },
+            endpoints: { type: 'object' },
+          },
+        },
+      },
+    },
+  })
   getHello(): ApiResponse<any> {
     return {
       message: 'Coffee House API is running!',
