@@ -17,7 +17,10 @@ import {
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from '../../common/dto/order.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { OptionalJwtAuthGuard } from '../auth/optional-jwt-auth.guard';
+import { OptionalUser } from '../auth/optional-user.decorator';
 import { ApiResponse } from '../../common/interfaces/api.interfaces';
+import { User } from '../../entities/user.entity';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -25,6 +28,7 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post('confirm')
+  @UseGuards(OptionalJwtAuthGuard)
   @ApiOperation({ summary: 'Confirm order (anonymous or authenticated)' })
   @ApiBody({ type: CreateOrderDto })
   @SwaggerApiResponse({
@@ -46,26 +50,9 @@ export class OrdersController {
   @SwaggerApiResponse({ status: 500, description: 'Internal server error' })
   async confirmOrder(
     @Body() createOrderDto: CreateOrderDto,
-    @Request() req,
+    @OptionalUser() user: User | null,
   ): Promise<ApiResponse<{ message: string; orderId: string }>> {
     try {
-      let user;
-      try {
-        const authHeader = req.headers.authorization;
-        if (authHeader && authHeader.startsWith('Bearer ')) {
-          const jwtGuard = new JwtAuthGuard();
-          await jwtGuard.canActivate({
-            ...req,
-            switchToHttp: () => ({
-              getRequest: () => req,
-            }),
-          });
-          user = req.user;
-        }
-      } catch (error) {
-        user = null;
-      }
-
       const result = await this.ordersService.confirmOrder(
         createOrderDto,
         user,
