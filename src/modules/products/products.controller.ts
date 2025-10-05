@@ -14,10 +14,8 @@ import {
 } from '@nestjs/swagger';
 import { ProductsService } from './products.service';
 import { Product } from '../../entities/product.entity';
-import {
-  ApiResponse,
-  ProductListItem,
-} from '../../common/interfaces/api.interfaces';
+import { ApiResponse } from '../../common/interfaces/api.interfaces';
+import type { ProductListItem } from '../../common/interfaces/api.interfaces';
 import {
   ProductsListResponseDto,
   ProductListItemsResponseDto,

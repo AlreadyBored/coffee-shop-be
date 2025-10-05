@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '../../entities/user.entity';
 import { Product } from '../../entities/product.entity';
 import { ProductListItem } from '../interfaces/api.interfaces';
+import { UserPublicDto } from './user.dto';
 
 // Base response wrapper
 export class BaseResponseDto<T> {
@@ -20,23 +20,24 @@ export class AuthTokenDto {
   @ApiProperty({ description: 'JWT access token' })
   access_token: string;
 
-  @ApiProperty({ description: 'User information without password' })
-  user: Omit<User, 'password'>;
+  @ApiProperty({
+    description: 'User information without password',
+    type: UserPublicDto,
+  })
+  user: UserPublicDto;
 }
 
 export class AuthResponseDto extends BaseResponseDto<AuthTokenDto> {
   @ApiProperty()
   data: AuthTokenDto;
 
-  @ApiProperty({ example: 'User registered successfully' })
+  @ApiProperty({ example: 'Operation successful' })
   message: string;
 }
 
-export class ProfileResponseDto extends BaseResponseDto<
-  Omit<User, 'password'>
-> {
-  @ApiProperty()
-  data: Omit<User, 'password'>;
+export class ProfileResponseDto extends BaseResponseDto<UserPublicDto> {
+  @ApiProperty({ type: UserPublicDto })
+  data: UserPublicDto;
 }
 
 // Product responses

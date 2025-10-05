@@ -19,12 +19,12 @@ import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto } from '../../common/dto/auth.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { ApiResponse } from '../../common/interfaces/api.interfaces';
-import { User } from '../../entities/user.entity';
 import {
   AuthResponseDto,
   ProfileResponseDto,
   ErrorResponseDto,
 } from '../../common/dto/response.dto';
+import { UserPublicDto } from '../../common/dto/user.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -55,9 +55,7 @@ export class AuthController {
   })
   async register(
     @Body() registerDto: RegisterDto,
-  ): Promise<
-    ApiResponse<{ access_token: string; user: Omit<User, 'password'> }>
-  > {
+  ): Promise<ApiResponse<{ access_token: string; user: UserPublicDto }>> {
     try {
       const result = await this.authService.register(registerDto);
       return {
@@ -101,9 +99,7 @@ export class AuthController {
   })
   async login(
     @Body() loginDto: LoginDto,
-  ): Promise<
-    ApiResponse<{ access_token: string; user: Omit<User, 'password'> }>
-  > {
+  ): Promise<ApiResponse<{ access_token: string; user: UserPublicDto }>> {
     try {
       const result = await this.authService.login(loginDto);
       return {
@@ -146,9 +142,7 @@ export class AuthController {
     description: 'Unauthorized',
     type: ErrorResponseDto,
   })
-  async getProfile(
-    @Request() req,
-  ): Promise<ApiResponse<Omit<User, 'password'>>> {
+  async getProfile(@Request() req): Promise<ApiResponse<UserPublicDto>> {
     try {
       return {
         data: req.user,

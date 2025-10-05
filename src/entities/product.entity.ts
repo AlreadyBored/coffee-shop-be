@@ -44,7 +44,7 @@ export class Product {
 
   @ApiProperty({ example: '6.75', required: false })
   @Column({ nullable: true })
-  discountPrice: string;
+  discountPrice: string | null;
 
   @ApiProperty({ example: 'coffee' })
   @Column()

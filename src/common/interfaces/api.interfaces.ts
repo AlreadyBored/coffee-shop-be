@@ -23,7 +23,7 @@ export class ProductListItem {
   price: string;
 
   @ApiProperty({ example: '6.75', required: false })
-  discountPrice?: string;
+  discountPrice?: string | null;
 
   @ApiProperty({ example: 'coffee' })
   category: string;

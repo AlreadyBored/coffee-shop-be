@@ -11,7 +11,8 @@ import * as bcrypt from 'bcrypt';
 import { User } from '../../entities/user.entity';
 import { LoginDto, RegisterDto } from '../../common/dto/auth.dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
-import omit from 'lodash/omit';
+import { UserPublicDto } from '../../common/dto/user.dto';
+import { omit } from 'lodash';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +27,7 @@ export class AuthService {
    */
   async register(
     registerDto: RegisterDto,
-  ): Promise<{ access_token: string; user: Omit<User, 'password'> }> {
+  ): Promise<{ access_token: string; user: UserPublicDto }> {
     const {
       login,
       password,
@@ -77,7 +78,7 @@ export class AuthService {
 
   async login(
     loginDto: LoginDto,
-  ): Promise<{ access_token: string; user: Omit<User, 'password'> }> {
+  ): Promise<{ access_token: string; user: UserPublicDto }> {
     const { login, password } = loginDto;
 
     const user = await this.userRepository.findOne({ where: { login } });
@@ -99,7 +100,7 @@ export class AuthService {
     };
   }
 
-  async validateUser(userId: number): Promise<Omit<User, 'password'> | null> {
+  async validateUser(userId: number): Promise<UserPublicDto | null> {
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user) {
       return null;
@@ -108,7 +109,7 @@ export class AuthService {
     return omit(user, 'password');
   }
 
-  async getUserById(id: number): Promise<Omit<User, 'password'> | null> {
+  async getUserById(id: number): Promise<UserPublicDto | null> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       return null;
