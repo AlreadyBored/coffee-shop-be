@@ -20,6 +20,11 @@ import { LoginDto, RegisterDto } from '../../common/dto/auth.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { ApiResponse } from '../../common/interfaces/api.interfaces';
 import { User } from '../../entities/user.entity';
+import {
+  AuthResponseDto,
+  ProfileResponseDto,
+  ErrorResponseDto,
+} from '../../common/dto/response.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -36,33 +41,18 @@ export class AuthController {
   @SwaggerApiResponse({
     status: 201,
     description: 'User registered successfully',
-    schema: {
-      type: 'object',
-      properties: {
-        data: {
-          type: 'object',
-          properties: {
-            access_token: { type: 'string' },
-            user: {
-              type: 'object',
-              properties: {
-                id: { type: 'number' },
-                login: { type: 'string' },
-                city: { type: 'string' },
-                street: { type: 'string' },
-                houseNumber: { type: 'string' },
-                paymentMethod: { type: 'string' },
-                createdAt: { type: 'string', format: 'date-time' },
-              },
-            },
-          },
-        },
-        message: { type: 'string' },
-      },
-    },
+    type: AuthResponseDto,
   })
-  @SwaggerApiResponse({ status: 400, description: 'Bad request' })
-  @SwaggerApiResponse({ status: 409, description: 'User already exists' })
+  @SwaggerApiResponse({
+    status: 400,
+    description: 'Bad request',
+    type: ErrorResponseDto,
+  })
+  @SwaggerApiResponse({
+    status: 409,
+    description: 'User already exists',
+    type: ErrorResponseDto,
+  })
   async register(
     @Body() registerDto: RegisterDto,
   ): Promise<
@@ -102,32 +92,13 @@ export class AuthController {
   @SwaggerApiResponse({
     status: 200,
     description: 'Login successful',
-    schema: {
-      type: 'object',
-      properties: {
-        data: {
-          type: 'object',
-          properties: {
-            access_token: { type: 'string' },
-            user: {
-              type: 'object',
-              properties: {
-                id: { type: 'number' },
-                login: { type: 'string' },
-                city: { type: 'string' },
-                street: { type: 'string' },
-                houseNumber: { type: 'string' },
-                paymentMethod: { type: 'string' },
-                createdAt: { type: 'string', format: 'date-time' },
-              },
-            },
-          },
-        },
-        message: { type: 'string' },
-      },
-    },
+    type: AuthResponseDto,
   })
-  @SwaggerApiResponse({ status: 401, description: 'Invalid credentials' })
+  @SwaggerApiResponse({
+    status: 401,
+    description: 'Invalid credentials',
+    type: ErrorResponseDto,
+  })
   async login(
     @Body() loginDto: LoginDto,
   ): Promise<
@@ -168,25 +139,13 @@ export class AuthController {
   @SwaggerApiResponse({
     status: 200,
     description: 'Profile retrieved successfully',
-    schema: {
-      type: 'object',
-      properties: {
-        data: {
-          type: 'object',
-          properties: {
-            id: { type: 'number' },
-            login: { type: 'string' },
-            city: { type: 'string' },
-            street: { type: 'string' },
-            houseNumber: { type: 'string' },
-            paymentMethod: { type: 'string' },
-            createdAt: { type: 'string', format: 'date-time' },
-          },
-        },
-      },
-    },
+    type: ProfileResponseDto,
   })
-  @SwaggerApiResponse({ status: 401, description: 'Unauthorized' })
+  @SwaggerApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+    type: ErrorResponseDto,
+  })
   async getProfile(
     @Request() req,
   ): Promise<ApiResponse<Omit<User, 'password'>>> {

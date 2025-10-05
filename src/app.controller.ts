@@ -6,6 +6,7 @@ import {
 } from '@nestjs/swagger';
 import { AppService } from './app.service';
 import { ApiResponse } from './common/interfaces/api.interfaces';
+import { AppInfoResponseDto } from './common/dto/response.dto';
 
 @ApiTags('App')
 @Controller()
@@ -17,19 +18,7 @@ export class AppController {
   @SwaggerApiResponse({
     status: 200,
     description: 'API information retrieved successfully',
-    schema: {
-      type: 'object',
-      properties: {
-        message: { type: 'string' },
-        data: {
-          type: 'object',
-          properties: {
-            version: { type: 'string' },
-            endpoints: { type: 'object' },
-          },
-        },
-      },
-    },
+    type: AppInfoResponseDto,
   })
   getHello(): ApiResponse<any> {
     return {

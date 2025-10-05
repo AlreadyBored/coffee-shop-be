@@ -21,6 +21,10 @@ import { OptionalJwtAuthGuard } from '../auth/optional-jwt-auth.guard';
 import { OptionalUser } from '../auth/optional-user.decorator';
 import { ApiResponse } from '../../common/interfaces/api.interfaces';
 import { User } from '../../entities/user.entity';
+import {
+  OrderResponseDto,
+  ErrorResponseDto,
+} from '../../common/dto/response.dto';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -34,20 +38,13 @@ export class OrdersController {
   @SwaggerApiResponse({
     status: 201,
     description: 'Order confirmed successfully',
-    schema: {
-      type: 'object',
-      properties: {
-        data: {
-          type: 'object',
-          properties: {
-            message: { type: 'string' },
-            orderId: { type: 'string' },
-          },
-        },
-      },
-    },
+    type: OrderResponseDto,
   })
-  @SwaggerApiResponse({ status: 500, description: 'Internal server error' })
+  @SwaggerApiResponse({
+    status: 500,
+    description: 'Internal server error',
+    type: ErrorResponseDto,
+  })
   async confirmOrder(
     @Body() createOrderDto: CreateOrderDto,
     @OptionalUser() user: User | null,
@@ -83,21 +80,18 @@ export class OrdersController {
   @SwaggerApiResponse({
     status: 201,
     description: 'Order confirmed successfully',
-    schema: {
-      type: 'object',
-      properties: {
-        data: {
-          type: 'object',
-          properties: {
-            message: { type: 'string' },
-            orderId: { type: 'string' },
-          },
-        },
-      },
-    },
+    type: OrderResponseDto,
   })
-  @SwaggerApiResponse({ status: 401, description: 'Unauthorized' })
-  @SwaggerApiResponse({ status: 500, description: 'Internal server error' })
+  @SwaggerApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+    type: ErrorResponseDto,
+  })
+  @SwaggerApiResponse({
+    status: 500,
+    description: 'Internal server error',
+    type: ErrorResponseDto,
+  })
   async confirmOrderAuth(
     @Body() createOrderDto: CreateOrderDto,
     @Request() req,
