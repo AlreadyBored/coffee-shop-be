@@ -40,7 +40,13 @@ cd coffee-shop-be
 npm install
 ```
 
-3. The application will automatically create and seed the SQLite database on first run.
+3. Set up environment variables:
+```bash
+cp .env.example .env
+```
+Edit the `.env` file with your preferred configuration values.
+
+4. The application will automatically create and seed the SQLite database on first run.
 
 ## 🚀 Running the Application
 
@@ -55,12 +61,25 @@ npm run start:prod
 npm run start:debug
 ```
 
-The server will start on `http://localhost:3000`
+The server will start on the port specified in your `.env` file (default: `http://localhost:3000`)
+
+## ⚙️ Environment Variables
+
+The application uses the following environment variables (see `.env.example`):
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `PORT` | Application port | `3000` |
+| `NODE_ENV` | Environment mode | `development` |
+| `SWAGGER_ENABLED` | Enable/disable Swagger UI | `true` |
+| `SWAGGER_PATH` | Swagger UI path | `api` |
+| `JWT_SECRET` | JWT signing secret | `your-super-secret-jwt-key-change-this-in-production` |
+| `JWT_EXPIRES_IN` | JWT token expiration | `24h` |
 
 ## 📚 API Documentation
 
 Interactive Swagger UI documentation is available at:
-**http://localhost:3000/api**
+**http://localhost:{PORT}/{SWAGGER_PATH}** (default: `http://localhost:3000/api`)
 
 The API documentation includes:
 - Complete endpoint descriptions
