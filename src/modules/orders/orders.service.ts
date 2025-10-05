@@ -15,7 +15,7 @@ export class OrdersService {
     user?: User,
   ): Promise<{ message: string; orderId: string }> {
     // Generate random order ID
-    const orderId = randomUUID()
+    const orderId = randomUUID();
 
     // Here could be the following logic:
     // 1. Product validation and availability check

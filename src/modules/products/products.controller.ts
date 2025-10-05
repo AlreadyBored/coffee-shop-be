@@ -30,6 +30,7 @@ export class ProductsController {
         data: products,
       };
     } catch (error) {
+      console.error('Error fetching favorite products:', error);
       throw new HttpException(
         {
           success: false,

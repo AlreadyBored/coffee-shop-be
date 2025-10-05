@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import shuffle from 'lodash/shuffle';
+import { shuffle } from 'lodash';
 import { Product } from '../../entities/product.entity';
 import { ProductListItem } from '../../common/interfaces/api.interfaces';
 
