@@ -35,16 +35,7 @@ jest.mock('bcrypt', () => ({
   compare: jest.fn(),
 }));
 
-// Mock lodash
-jest.mock('lodash', () => ({
-  omit: jest.fn((obj, keys) => {
-    const result = { ...obj };
-    // Handle both string and array of keys
-    const keysArray = Array.isArray(keys) ? keys : [keys];
-    keysArray.forEach((key) => delete result[key]);
-    return result;
-  }),
-}));
+// Using real lodash implementation (imported by the service under test)
 
 // Import the mocked classes
 import { User, PaymentMethod } from '../../entities/user.entity';

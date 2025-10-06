@@ -178,13 +178,9 @@ describe('OrdersService', () => {
       const mockOrderId = 'test-uuid-timestamp';
       (randomUUID as jest.Mock).mockReturnValue(mockOrderId);
 
-      // Mock Date to control timestamp
-      const mockDate = new Date('2023-01-01T12:00:00.000Z');
-      const originalDate = global.Date;
-      global.Date = jest.fn(() => mockDate) as any;
-      global.Date.now = originalDate.now;
-      global.Date.UTC = originalDate.UTC;
-      global.Date.parse = originalDate.parse;
+      // Use Jest's fake timers for cleaner date mocking
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date('2023-01-01T12:00:00.000Z'));
 
       await service.confirmOrder(mockCreateOrderDto, mockUser);
 
@@ -196,8 +192,8 @@ describe('OrdersService', () => {
         timestamp: '2023-01-01T12:00:00.000Z',
       });
 
-      // Restore original Date
-      global.Date = originalDate;
+      // Restore real timers
+      jest.useRealTimers();
     });
   });
 });

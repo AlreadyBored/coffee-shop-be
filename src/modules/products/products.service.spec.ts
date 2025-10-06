@@ -11,8 +11,8 @@ jest.mock('../../entities/product.entity', () => ({
     price: string;
     discountPrice: string | null;
     category: string;
-    sizes: any;
-    additives: any[];
+    sizes: ProductSizes;
+    additives: ProductAdditive[];
   },
   ProductSizes: {},
   ProductAdditive: {},
