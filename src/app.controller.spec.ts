@@ -15,8 +15,16 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('should return API information', () => {
+      const result = appController.getHello();
+
+      expect(result).toHaveProperty('message', 'Coffee House API is running!');
+      expect(result).toHaveProperty('data');
+      expect(result.data).toHaveProperty('version', '1.0.0');
+      expect(result.data).toHaveProperty('endpoints');
+      expect(result.data.endpoints).toHaveProperty('products');
+      expect(result.data.endpoints).toHaveProperty('auth');
+      expect(result.data.endpoints).toHaveProperty('orders');
     });
   });
 });
