@@ -95,7 +95,6 @@ export class ApiEndpointsDto {
   @ApiProperty({
     example: {
       'POST /orders/confirm': 'Confirm order (anonymous or authenticated)',
-      'POST /orders/confirm-auth': 'Confirm order (authenticated only)',
     },
   })
   orders: Record<string, string>;

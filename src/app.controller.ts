@@ -40,7 +40,6 @@ export class AppController {
           orders: {
             'POST /orders/confirm':
               'Confirm order (anonymous or authenticated)',
-            'POST /orders/confirm-auth': 'Confirm order (authenticated only)',
           },
         },
       },

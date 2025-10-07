@@ -101,7 +101,6 @@ The API documentation includes:
 
 ### Orders
 - `POST /orders/confirm` - Confirm order (anonymous or authenticated)
-- `POST /orders/confirm-auth` - Confirm order (authenticated users only)
 
 ### General
 - `GET /` - API information and available endpoints

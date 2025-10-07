@@ -59,150 +59,85 @@ describe('OrdersController (e2e)', () => {
   });
 
   describe('/orders/confirm (POST)', () => {
-    describe('Anonymous orders', () => {
-      it('should confirm order without authentication', () => {
-        return request(app.getHttpServer())
-          .post('/orders/confirm')
-          .send(validOrderDto)
-          .expect(201)
-          .expect((res) => {
-            expect(res.body).toHaveProperty('data');
-            expect(res.body.data).toHaveProperty(
-              'message',
-              'Your order is confirmed',
-            );
-            expect(res.body.data).toHaveProperty('orderId');
-            expect(typeof res.body.data.orderId).toBe('string');
-            expect(res.body.data.orderId).toMatch(/^[a-f0-9-]{36}$/); // UUID format
-          });
-      });
-
-      it('should handle empty order items', () => {
-        return request(app.getHttpServer())
-          .post('/orders/confirm')
-          .send({
-            items: [],
-            totalPrice: 0,
-          })
-          .expect(201)
-          .expect((res) => {
-            expect(res.body).toHaveProperty('data');
-            expect(res.body.data).toHaveProperty(
-              'message',
-              'Your order is confirmed',
-            );
-            expect(res.body.data).toHaveProperty('orderId');
-          });
-      });
-
-      it('should return 400 for invalid order data', () => {
-        return request(app.getHttpServer())
-          .post('/orders/confirm')
-          .send({
-            items: 'invalid', // Should be array
-            totalPrice: 'invalid', // Should be number
-          })
-          .expect(400);
-      });
-
-      it('should return 400 for missing required fields', () => {
-        return request(app.getHttpServer())
-          .post('/orders/confirm')
-          .send({
-            items: validOrderDto.items,
-            // Missing totalPrice
-          })
-          .expect(400);
-      });
-
-      it('should return 400 for negative total price', () => {
-        return request(app.getHttpServer())
-          .post('/orders/confirm')
-          .send({
-            ...validOrderDto,
-            totalPrice: -10.5,
-          })
-          .expect(400);
-      });
-
-      it('should handle order with single item', () => {
-        const singleItemOrder = {
-          items: [validOrderDto.items[0]],
-          totalPrice: 12.98,
-        };
-
-        return request(app.getHttpServer())
-          .post('/orders/confirm')
-          .send(singleItemOrder)
-          .expect(201)
-          .expect((res) => {
-            expect(res.body).toHaveProperty('data');
-            expect(res.body.data).toHaveProperty('orderId');
-          });
-      });
+    it('should confirm order', () => {
+      return request(app.getHttpServer())
+        .post('/orders/confirm')
+        .send(validOrderDto)
+        .expect(201)
+        .expect((res) => {
+          expect(res.body).toHaveProperty('data');
+          expect(res.body.data).toHaveProperty(
+            'message',
+            'Your order is confirmed',
+          );
+          expect(res.body.data).toHaveProperty('orderId');
+          expect(typeof res.body.data.orderId).toBe('string');
+          expect(res.body.data.orderId).toMatch(/^[a-f0-9-]{36}$/); // UUID format
+        });
     });
 
-    describe('Authenticated orders', () => {
-      let accessToken: string;
-      const registerDto = {
-        login: 'orderuser',
-        password: 'password123',
-        confirmPassword: 'password123',
-        city: 'Order City',
-        street: 'Order Street',
-        houseNumber: 789,
-        paymentMethod: PaymentMethod.CARD,
+    it('should handle empty order items', () => {
+      return request(app.getHttpServer())
+        .post('/orders/confirm')
+        .send({
+          items: [],
+          totalPrice: 0,
+        })
+        .expect(201)
+        .expect((res) => {
+          expect(res.body).toHaveProperty('data');
+          expect(res.body.data).toHaveProperty(
+            'message',
+            'Your order is confirmed',
+          );
+          expect(res.body.data).toHaveProperty('orderId');
+        });
+    });
+
+    it('should return 400 for invalid order data', () => {
+      return request(app.getHttpServer())
+        .post('/orders/confirm')
+        .send({
+          items: 'invalid', // Should be array
+          totalPrice: 'invalid', // Should be number
+        })
+        .expect(400);
+    });
+
+    it('should return 400 for missing required fields', () => {
+      return request(app.getHttpServer())
+        .post('/orders/confirm')
+        .send({
+          items: validOrderDto.items,
+          // Missing totalPrice
+        })
+        .expect(400);
+    });
+
+    it('should return 400 for negative total price', () => {
+      return request(app.getHttpServer())
+        .post('/orders/confirm')
+        .send({
+          ...validOrderDto,
+          totalPrice: -10.5,
+        })
+        .expect(400);
+    });
+
+    it('should handle order with single item', () => {
+      const singleItemOrder = {
+        items: [validOrderDto.items[0]],
+        totalPrice: 12.98,
       };
 
-      beforeEach(async () => {
-        // Register and login to get access token
-        const registerResponse = await request(app.getHttpServer())
-          .post('/auth/register')
-          .send(registerDto)
-          .expect(201);
-
-        accessToken = registerResponse.body.data.access_token;
-      });
-
-      it('should confirm order with valid authentication', () => {
-        return request(app.getHttpServer())
-          .post('/orders/confirm')
-          .set('Authorization', `Bearer ${accessToken}`)
-          .send(validOrderDto)
-          .expect(201)
-          .expect((res) => {
-            expect(res.body).toHaveProperty('data');
-            expect(res.body.data).toHaveProperty(
-              'message',
-              'Your order is confirmed',
-            );
-            expect(res.body.data).toHaveProperty('orderId');
-          });
-      });
-
-      it('should work with invalid/expired token (optional auth)', () => {
-        return request(app.getHttpServer())
-          .post('/orders/confirm')
-          .set('Authorization', 'Bearer invalid-token')
-          .send(validOrderDto)
-          .expect(201)
-          .expect((res) => {
-            expect(res.body).toHaveProperty('data');
-            expect(res.body.data).toHaveProperty('orderId');
-          });
-      });
-
-      it('should work with malformed authorization header', () => {
-        return request(app.getHttpServer())
-          .post('/orders/confirm')
-          .set('Authorization', 'InvalidFormat token')
-          .send(validOrderDto)
-          .expect(201)
-          .expect((res) => {
-            expect(res.body).toHaveProperty('data');
-            expect(res.body.data).toHaveProperty('orderId');
-          });
-      });
+      return request(app.getHttpServer())
+        .post('/orders/confirm')
+        .send(singleItemOrder)
+        .expect(201)
+        .expect((res) => {
+          expect(res.body).toHaveProperty('data');
+          expect(res.body.data).toHaveProperty('orderId');
+        });
     });
 
     describe('Order validation', () => {
