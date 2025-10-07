@@ -115,28 +115,65 @@ describe('ProductsService', () => {
   });
 
   describe('getRandomCoffeeProducts', () => {
-    it('should return 3 random coffee products when more than 3 exist', async () => {
-      mockRepository.find.mockResolvedValue(mockCoffeeProducts);
+    it('should return 3 random coffee products without sizes and additives when more than 3 exist', async () => {
+      const mockProductsWithoutSizesAndAdditives = mockCoffeeProducts.map(
+        (product) => ({
+          id: product.id,
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          discountPrice: product.discountPrice,
+          category: product.category,
+        }),
+      );
+      mockRepository.find.mockResolvedValue(
+        mockProductsWithoutSizesAndAdditives,
+      );
 
       const result = await service.getRandomCoffeeProducts();
 
       expect(mockRepository.find).toHaveBeenCalledWith({
         where: { category: 'coffee' },
+        select: [
+          'id',
+          'name',
+          'description',
+          'price',
+          'discountPrice',
+          'category',
+        ],
       });
       expect(result).toHaveLength(3);
       expect(result.every((product) => product.category === 'coffee')).toBe(
         true,
       );
+      // Verify sizes and additives are not included
+      expect(result.every((product) => !('sizes' in product))).toBe(true);
+      expect(result.every((product) => !('additives' in product))).toBe(true);
     });
 
-    it('should return all coffee products when less than 3 exist', async () => {
-      const twoProducts = mockCoffeeProducts.slice(0, 2);
-      mockRepository.find.mockResolvedValue(twoProducts);
+    it('should return all coffee products without sizes and additives when less than 3 exist', async () => {
+      const twoProductsWithoutSizesAndAdditives = mockCoffeeProducts
+        .slice(0, 2)
+        .map((product) => ({
+          id: product.id,
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          discountPrice: product.discountPrice,
+          category: product.category,
+        }));
+      mockRepository.find.mockResolvedValue(
+        twoProductsWithoutSizesAndAdditives,
+      );
 
       const result = await service.getRandomCoffeeProducts();
 
       expect(result).toHaveLength(2);
-      expect(result).toEqual(twoProducts.reverse()); // Due to our mock shuffle
+      expect(result).toEqual(twoProductsWithoutSizesAndAdditives.reverse()); // Due to our mock shuffle
+      // Verify sizes and additives are not included
+      expect(result.every((product) => !('sizes' in product))).toBe(true);
+      expect(result.every((product) => !('additives' in product))).toBe(true);
     });
 
     it('should return empty array when no coffee products exist', async () => {

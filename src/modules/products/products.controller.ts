@@ -17,7 +17,6 @@ import { Product } from '../../entities/product.entity';
 import { ApiResponse } from '../../common/interfaces/api.interfaces';
 import type { ProductListItem } from '../../common/interfaces/api.interfaces';
 import {
-  ProductsListResponseDto,
   ProductListItemsResponseDto,
   ProductResponseDto,
   ErrorResponseDto,
@@ -37,14 +36,14 @@ export class ProductsController {
   @SwaggerApiResponse({
     status: 200,
     description: 'Favorite products retrieved successfully',
-    type: ProductsListResponseDto,
+    type: ProductListItemsResponseDto,
   })
   @SwaggerApiResponse({
     status: 500,
     description: 'Internal server error',
     type: ErrorResponseDto,
   })
-  async getFavoriteProducts(): Promise<ApiResponse<Product[]>> {
+  async getFavoriteProducts(): Promise<ApiResponse<ProductListItem[]>> {
     try {
       const products = await this.productsService.getRandomCoffeeProducts();
       return {

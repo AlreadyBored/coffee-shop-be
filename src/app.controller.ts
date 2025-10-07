@@ -28,7 +28,7 @@ export class AppController {
         endpoints: {
           products: {
             'GET /products/favorites':
-              'Get 3 random coffee products for main page',
+              'Get 3 random coffee products for main page (without sizes and additives)',
             'GET /products': 'Get all products (without sizes and additives)',
             'GET /products/:id': 'Get full product details by ID',
           },

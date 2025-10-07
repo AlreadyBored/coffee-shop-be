@@ -95,7 +95,7 @@ The API documentation includes:
 - `GET /auth/profile` - Get current user profile (protected)
 
 ### Products
-- `GET /products/favorites` - Get 3 random coffee products for main page
+- `GET /products/favorites` - Get 3 random coffee products for main page (without sizes and additives)
 - `GET /products` - Get all products (without sizes and additives)
 - `GET /products/:id` - Get full product details by ID
 

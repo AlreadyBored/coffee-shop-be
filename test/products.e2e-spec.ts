@@ -103,8 +103,10 @@ describe('ProductsController (e2e)', () => {
             expect(product).toHaveProperty('name');
             expect(product).toHaveProperty('description');
             expect(product).toHaveProperty('price');
-            expect(product).toHaveProperty('sizes');
-            expect(product).toHaveProperty('additives');
+            expect(product).toHaveProperty('category');
+            // Should not include sizes and additives
+            expect(product).not.toHaveProperty('sizes');
+            expect(product).not.toHaveProperty('additives');
           });
         });
     });

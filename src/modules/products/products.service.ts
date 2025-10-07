@@ -13,11 +13,19 @@ export class ProductsService {
   ) {}
 
   /**
-   * Get 3 random products from coffee category
+   * Get 3 random products from coffee category without sizes and additives
    */
-  async getRandomCoffeeProducts(): Promise<Product[]> {
+  async getRandomCoffeeProducts(): Promise<ProductListItem[]> {
     const coffeeProducts = await this.productRepository.find({
       where: { category: 'coffee' },
+      select: [
+        'id',
+        'name',
+        'description',
+        'price',
+        'discountPrice',
+        'category',
+      ],
     });
 
     if (coffeeProducts.length === 0) {

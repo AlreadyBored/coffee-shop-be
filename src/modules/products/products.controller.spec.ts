@@ -70,7 +70,10 @@ describe('ProductsController', () => {
 
   describe('getFavoriteProducts', () => {
     it('should return random coffee products successfully', async () => {
-      const mockCoffeeProducts = [mockProduct, { ...mockProduct, id: 2 }];
+      const mockCoffeeProducts = [
+        mockProductListItem,
+        { ...mockProductListItem, id: 2 },
+      ];
       mockProductsService.getRandomCoffeeProducts.mockResolvedValue(
         mockCoffeeProducts,
       );
