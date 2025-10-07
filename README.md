@@ -107,7 +107,7 @@ The API documentation includes:
 
 ## 🧪 Error Simulation
 
-The API includes built-in error simulation for testing purposes. All product and order endpoints have a **25% chance** of returning a simulated 500 Internal Server Error.
+The API includes built-in error simulation for testing purposes. All product and order endpoints have a **configurable chance** (default 25%) of returning a simulated 500 Internal Server Error.
 
 ### Test Error Response Format
 ```json
@@ -118,8 +118,14 @@ The API includes built-in error simulation for testing purposes. All product and
 }
 ```
 
+### Configuration:
+- **Default Probability**: 25% chance on each API call
+- **Environment Variable**: Set `TEST_ERROR_PROBABILITY` (0.0-1.0) to customize
+- **ConfigService Integration**: Managed through NestJS configuration system
+- **Programmatic Override**: Pass custom probability to `simulateRandomError(0.1)` for 10%
+
 ### Key Features:
-- **Random Occurrence**: 25% probability on each API call
+- **Configurable Occurrence**: Adjustable probability via environment variable or parameter
 - **Identifiable**: Contains `isTestError: true` flag
 - **Realistic**: Returns actual HTTP 500 status code
 - **Timestamped**: Includes error timestamp
@@ -230,14 +236,6 @@ Secure authentication system with password hashing using bcrypt and JWT token ge
 
 ### Swagger Integration
 Complete API documentation with interactive testing capabilities using Swagger UI.
-
-## 🚦 CORS Configuration
-
-The API is configured to accept requests from:
-- `http://localhost:3000`
-- `http://localhost:3001`
-- `http://127.0.0.1:3000`
-- `http://127.0.0.1:3001`
 
 ## 📝 Environment
 

@@ -21,12 +21,15 @@ import {
   ProductResponseDto,
   ErrorResponseDto,
 } from '../../common/dto/response.dto';
-import { simulateRandomError } from '../../common/utils/error-simulation.util';
+import { ErrorSimulationService } from '../../common/services/error-simulation.service';
 
 @ApiTags('Products')
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(
+    private readonly productsService: ProductsService,
+    private readonly errorSimulationService: ErrorSimulationService,
+  ) {}
 
   /**
    * GET /products/favorites
@@ -46,7 +49,7 @@ export class ProductsController {
   })
   async getFavoriteProducts(): Promise<ApiResponse<ProductListItem[]>> {
     // Simulate random API errors for testing
-    simulateRandomError();
+    this.errorSimulationService.simulateRandomError();
 
     try {
       const products = await this.productsService.getRandomCoffeeProducts();
@@ -82,7 +85,7 @@ export class ProductsController {
   })
   async getAllProducts(): Promise<ApiResponse<ProductListItem[]>> {
     // Simulate random API errors for testing
-    simulateRandomError();
+    this.errorSimulationService.simulateRandomError();
 
     try {
       const products = await this.productsService.getAllProducts();
@@ -125,7 +128,7 @@ export class ProductsController {
     @Param('id', ParseIntPipe) id: number,
   ): Promise<ApiResponse<Product>> {
     // Simulate random API errors for testing
-    simulateRandomError();
+    this.errorSimulationService.simulateRandomError();
 
     try {
       const product = await this.productsService.getProductById(id);

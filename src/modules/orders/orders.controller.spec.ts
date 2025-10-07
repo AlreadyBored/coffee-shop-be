@@ -7,12 +7,12 @@ import { User, PaymentMethod } from '../../entities/user.entity';
 import {
   expectSuccessOrTestErrorUnit,
   expectSpecificErrorOrTestErrorUnit,
-  mockSimulateRandomError,
+  createMockErrorSimulationService,
 } from '../../../test/helpers/unit-test.helper';
+import { ErrorSimulationService } from '../../common/services/error-simulation.service';
 
 describe('OrdersController', () => {
   let controller: OrdersController;
-  let mockSimulateRandomErrorFn: jest.MockedFunction<() => void>;
 
   const mockUser: User = {
     id: 1,
@@ -53,15 +53,16 @@ describe('OrdersController', () => {
   };
 
   beforeEach(async () => {
-    // Mock the error simulation function
-    mockSimulateRandomErrorFn = mockSimulateRandomError();
-
     const module: TestingModule = await Test.createTestingModule({
       controllers: [OrdersController],
       providers: [
         {
           provide: OrdersService,
           useValue: mockOrdersService,
+        },
+        {
+          provide: ErrorSimulationService,
+          useValue: createMockErrorSimulationService(),
         },
       ],
     }).compile();
@@ -70,7 +71,6 @@ describe('OrdersController', () => {
 
     // Clear all mocks before each test
     jest.clearAllMocks();
-    mockSimulateRandomErrorFn.mockClear();
   });
 
   it('should be defined', () => {

@@ -12,7 +12,7 @@ export function expectSuccessOrTestError(
   return request.expect((res) => {
     // If it's a success response, check the expected status
     if (res.status === expectedSuccessStatus) {
-      return; // Success - continue with normal expectations
+      return; // Success - no further checks needed
     }
 
     // If it's a 500 error, check if it's a test error

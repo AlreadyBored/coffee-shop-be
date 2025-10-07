@@ -11,4 +11,7 @@ export default () => ({
       'your-super-secret-jwt-key-change-this-in-production',
     expiresIn: process.env.JWT_EXPIRES_IN || '24h',
   },
+  errorSimulation: {
+    probability: parseFloat(process.env.TEST_ERROR_PROBABILITY) || 0.25,
+  },
 });

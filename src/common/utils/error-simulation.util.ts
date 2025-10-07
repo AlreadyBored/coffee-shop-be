@@ -7,12 +7,24 @@ export interface TestErrorResponse {
 }
 
 /**
- * Simulates random API errors for testing purposes.
- * Throws a 500 HTTP error with ~25% probability.
- * The error includes isTestError: true to differentiate from real errors.
+ * Default probability for random error simulation (25%)
  */
-export function simulateRandomError(): void {
-  const shouldThrowError = Math.random() < 0.25; // 25% probability
+export const DEFAULT_ERROR_PROBABILITY = 0.25;
+
+/**
+ * Simulates random API errors for testing purposes.
+ * Throws a 500 HTTP error with configurable probability.
+ * The error includes isTestError: true to differentiate from real errors.
+ *
+ * @param probability - Error probability (0-1), defaults to 25% or env variable TEST_ERROR_PROBABILITY
+ */
+export function simulateRandomError(probability?: number): void {
+  const errorProbability =
+    probability ??
+    (parseFloat(process.env.TEST_ERROR_PROBABILITY || '') ||
+      DEFAULT_ERROR_PROBABILITY);
+
+  const shouldThrowError = Math.random() < errorProbability;
 
   if (shouldThrowError) {
     const testErrorResponse: TestErrorResponse = {

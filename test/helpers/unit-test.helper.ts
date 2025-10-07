@@ -90,32 +90,31 @@ export async function expectSpecificErrorOrTestErrorUnit(
 }
 
 /**
- * Mock the simulateRandomError function to control when it throws errors in tests.
+ * Create a mock ErrorSimulationService for unit tests.
  * Use this in beforeEach to reset the mock state.
  */
-export function mockSimulateRandomError(): jest.MockedFunction<() => void> {
-  // Mock the entire module
-  jest.doMock('../../src/common/utils/error-simulation.util', () => ({
+export function createMockErrorSimulationService(): {
+  simulateRandomError: jest.MockedFunction<
+    (customProbability?: number) => void
+  >;
+  isTestError: jest.MockedFunction<(errorResponse: any) => boolean>;
+} {
+  return {
     simulateRandomError: jest.fn(),
-    isTestError: jest.requireActual(
-      '../../src/common/utils/error-simulation.util',
-    ).isTestError,
-  }));
-
-  const {
-    simulateRandomError,
-  } = require('../../src/common/utils/error-simulation.util'); // eslint-disable-line @typescript-eslint/no-var-requires
-  return simulateRandomError as jest.MockedFunction<() => void>;
+    isTestError: jest.fn(),
+  };
 }
 
 /**
- * Force the simulateRandomError to throw a test error.
+ * Force the ErrorSimulationService to throw a test error.
  * Useful for testing the error handling path specifically.
  */
 export function forceTestError(
-  mockSimulateRandomError: jest.MockedFunction<() => void>,
+  mockErrorSimulationService: ReturnType<
+    typeof createMockErrorSimulationService
+  >,
 ): void {
-  mockSimulateRandomError.mockImplementationOnce(() => {
+  mockErrorSimulationService.simulateRandomError.mockImplementationOnce(() => {
     const testErrorResponse = {
       error: 'Simulated API error for testing purposes',
       isTestError: true,
@@ -130,13 +129,15 @@ export function forceTestError(
 }
 
 /**
- * Ensure the simulateRandomError does not throw an error.
+ * Ensure the ErrorSimulationService does not throw an error.
  * Useful for testing the success path specifically.
  */
 export function preventTestError(
-  mockSimulateRandomError: jest.MockedFunction<() => void>,
+  mockErrorSimulationService: ReturnType<
+    typeof createMockErrorSimulationService
+  >,
 ): void {
-  mockSimulateRandomError.mockImplementationOnce(() => {
+  mockErrorSimulationService.simulateRandomError.mockImplementationOnce(() => {
     // Do nothing - no error thrown
   });
 }

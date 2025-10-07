@@ -22,12 +22,15 @@ import {
   OrderResponseDto,
   ErrorResponseDto,
 } from '../../common/dto/response.dto';
-import { simulateRandomError } from '../../common/utils/error-simulation.util';
+import { ErrorSimulationService } from '../../common/services/error-simulation.service';
 
 @ApiTags('Orders')
 @Controller('orders')
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(
+    private readonly ordersService: OrdersService,
+    private readonly errorSimulationService: ErrorSimulationService,
+  ) {}
 
   @Post('confirm')
   @UseGuards(OptionalJwtAuthGuard)
@@ -48,7 +51,7 @@ export class OrdersController {
     @OptionalUser() user: User | null,
   ): Promise<ApiResponse<{ message: string; orderId: string }>> {
     // Simulate random API errors for testing
-    simulateRandomError();
+    this.errorSimulationService.simulateRandomError();
 
     try {
       const result = await this.ordersService.confirmOrder(

@@ -10,12 +10,12 @@ import {
 import {
   expectSuccessOrTestErrorUnit,
   expectSpecificErrorOrTestErrorUnit,
-  mockSimulateRandomError,
+  createMockErrorSimulationService,
 } from '../../../test/helpers/unit-test.helper';
+import { ErrorSimulationService } from '../../common/services/error-simulation.service';
 
 describe('ProductsController', () => {
   let controller: ProductsController;
-  let mockSimulateRandomErrorFn: jest.MockedFunction<() => void>;
 
   const mockSizes: ProductSizes = {
     s: { size: '200 ml', price: '5.99' },
@@ -54,15 +54,16 @@ describe('ProductsController', () => {
   };
 
   beforeEach(async () => {
-    // Mock the error simulation function
-    mockSimulateRandomErrorFn = mockSimulateRandomError();
-
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ProductsController],
       providers: [
         {
           provide: ProductsService,
           useValue: mockProductsService,
+        },
+        {
+          provide: ErrorSimulationService,
+          useValue: createMockErrorSimulationService(),
         },
       ],
     }).compile();
@@ -71,7 +72,6 @@ describe('ProductsController', () => {
 
     // Clear all mocks before each test
     jest.clearAllMocks();
-    mockSimulateRandomErrorFn.mockClear();
   });
 
   it('should be defined', () => {
