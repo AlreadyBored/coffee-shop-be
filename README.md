@@ -105,6 +105,37 @@ The API documentation includes:
 ### General
 - `GET /` - API information and available endpoints
 
+## 🧪 Error Simulation
+
+The API includes built-in error simulation for testing purposes. All product and order endpoints have a **25% chance** of returning a simulated 500 Internal Server Error.
+
+### Test Error Response Format
+```json
+{
+  "error": "Simulated API error for testing purposes",
+  "isTestError": true,
+  "timestamp": "2023-10-07T12:00:00.000Z"
+}
+```
+
+### Key Features:
+- **Random Occurrence**: 25% probability on each API call
+- **Identifiable**: Contains `isTestError: true` flag
+- **Realistic**: Returns actual HTTP 500 status code
+- **Timestamped**: Includes error timestamp
+
+### Affected Endpoints:
+- `GET /products/favorites`
+- `GET /products`
+- `GET /products/:id`
+- `POST /orders/confirm`
+
+### Testing Considerations:
+- E2E tests are designed to handle these simulated errors gracefully
+- Tests will accept simulated errors as valid responses
+- Tests will fail only on unexpected 500 errors (without `isTestError: true`)
+- Use multiple test runs or retry logic when testing success scenarios
+
 ## 🔐 Authentication
 
 The API uses JWT (JSON Web Tokens) for authentication. To access protected endpoints:

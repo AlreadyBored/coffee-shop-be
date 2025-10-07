@@ -22,6 +22,7 @@ import {
   OrderResponseDto,
   ErrorResponseDto,
 } from '../../common/dto/response.dto';
+import { simulateRandomError } from '../../common/utils/error-simulation.util';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -46,6 +47,9 @@ export class OrdersController {
     @Body() createOrderDto: CreateOrderDto,
     @OptionalUser() user: User | null,
   ): Promise<ApiResponse<{ message: string; orderId: string }>> {
+    // Simulate random API errors for testing
+    simulateRandomError();
+
     try {
       const result = await this.ordersService.confirmOrder(
         createOrderDto,

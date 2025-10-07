@@ -7,9 +7,15 @@ import {
   ProductSizes,
   ProductAdditive,
 } from '../../entities/product.entity';
+import {
+  expectSuccessOrTestErrorUnit,
+  expectSpecificErrorOrTestErrorUnit,
+  mockSimulateRandomError,
+} from '../../../test/helpers/unit-test.helper';
 
 describe('ProductsController', () => {
   let controller: ProductsController;
+  let mockSimulateRandomErrorFn: jest.MockedFunction<() => void>;
 
   const mockSizes: ProductSizes = {
     s: { size: '200 ml', price: '5.99' },
@@ -48,6 +54,9 @@ describe('ProductsController', () => {
   };
 
   beforeEach(async () => {
+    // Mock the error simulation function
+    mockSimulateRandomErrorFn = mockSimulateRandomError();
+
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ProductsController],
       providers: [
@@ -62,6 +71,7 @@ describe('ProductsController', () => {
 
     // Clear all mocks before each test
     jest.clearAllMocks();
+    mockSimulateRandomErrorFn.mockClear();
   });
 
   it('should be defined', () => {
@@ -78,30 +88,45 @@ describe('ProductsController', () => {
         mockCoffeeProducts,
       );
 
-      const result = await controller.getFavoriteProducts();
-
-      expect(mockProductsService.getRandomCoffeeProducts).toHaveBeenCalled();
-      expect(result).toEqual({
-        data: mockCoffeeProducts,
-      });
+      await expectSuccessOrTestErrorUnit(
+        () => controller.getFavoriteProducts(),
+        (result) => {
+          expect(
+            mockProductsService.getRandomCoffeeProducts,
+          ).toHaveBeenCalled();
+          expect(result).toEqual({
+            data: mockCoffeeProducts,
+          });
+        },
+      );
     });
 
     it('should return empty array when no coffee products exist', async () => {
       mockProductsService.getRandomCoffeeProducts.mockResolvedValue([]);
 
-      const result = await controller.getFavoriteProducts();
-
-      expect(result).toEqual({
-        data: [],
-      });
+      await expectSuccessOrTestErrorUnit(
+        () => controller.getFavoriteProducts(),
+        (result) => {
+          expect(result).toEqual({
+            data: [],
+          });
+        },
+      );
     });
 
     it('should throw HttpException when service throws error', async () => {
       const error = new Error('Database error');
       mockProductsService.getRandomCoffeeProducts.mockRejectedValue(error);
 
-      await expect(controller.getFavoriteProducts()).rejects.toThrow(
-        HttpException,
+      await expectSpecificErrorOrTestErrorUnit(
+        () => controller.getFavoriteProducts(),
+        (httpError) => {
+          expect(httpError).toBeInstanceOf(HttpException);
+          expect(httpError.getResponse()).toEqual({
+            error: 'Failed to fetch favorite products',
+          });
+          expect(httpError.getStatus()).toBe(500);
+        },
       );
     });
   });
@@ -114,29 +139,44 @@ describe('ProductsController', () => {
       ];
       mockProductsService.getAllProducts.mockResolvedValue(mockProducts);
 
-      const result = await controller.getAllProducts();
-
-      expect(mockProductsService.getAllProducts).toHaveBeenCalled();
-      expect(result).toEqual({
-        data: mockProducts,
-      });
+      await expectSuccessOrTestErrorUnit(
+        () => controller.getAllProducts(),
+        (result) => {
+          expect(mockProductsService.getAllProducts).toHaveBeenCalled();
+          expect(result).toEqual({
+            data: mockProducts,
+          });
+        },
+      );
     });
 
     it('should return empty array when no products exist', async () => {
       mockProductsService.getAllProducts.mockResolvedValue([]);
 
-      const result = await controller.getAllProducts();
-
-      expect(result).toEqual({
-        data: [],
-      });
+      await expectSuccessOrTestErrorUnit(
+        () => controller.getAllProducts(),
+        (result) => {
+          expect(result).toEqual({
+            data: [],
+          });
+        },
+      );
     });
 
     it('should throw HttpException when service throws error', async () => {
       const error = new Error('Database error');
       mockProductsService.getAllProducts.mockRejectedValue(error);
 
-      await expect(controller.getAllProducts()).rejects.toThrow(HttpException);
+      await expectSpecificErrorOrTestErrorUnit(
+        () => controller.getAllProducts(),
+        (httpError) => {
+          expect(httpError).toBeInstanceOf(HttpException);
+          expect(httpError.getResponse()).toEqual({
+            error: 'Failed to fetch products',
+          });
+          expect(httpError.getStatus()).toBe(500);
+        },
+      );
     });
   });
 
@@ -144,21 +184,31 @@ describe('ProductsController', () => {
     it('should return product by ID successfully', async () => {
       mockProductsService.getProductById.mockResolvedValue(mockProduct);
 
-      const result = await controller.getProductById(1);
-
-      expect(mockProductsService.getProductById).toHaveBeenCalledWith(1);
-      expect(result).toEqual({
-        data: mockProduct,
-      });
+      await expectSuccessOrTestErrorUnit(
+        () => controller.getProductById(1),
+        (result) => {
+          expect(mockProductsService.getProductById).toHaveBeenCalledWith(1);
+          expect(result).toEqual({
+            data: mockProduct,
+          });
+        },
+      );
     });
 
     it('should throw HttpException when product not found', async () => {
       const notFoundError = new Error('Product with ID 999 not found');
-      notFoundError.name = 'NotFoundException';
+      (notFoundError as any).status = 404;
       mockProductsService.getProductById.mockRejectedValue(notFoundError);
 
-      await expect(controller.getProductById(999)).rejects.toThrow(
-        HttpException,
+      await expectSpecificErrorOrTestErrorUnit(
+        () => controller.getProductById(999),
+        (httpError) => {
+          expect(httpError).toBeInstanceOf(HttpException);
+          expect(httpError.getResponse()).toEqual({
+            error: 'Product with ID 999 not found',
+          });
+          expect(httpError.getStatus()).toBe(404);
+        },
       );
     });
 
@@ -166,8 +216,15 @@ describe('ProductsController', () => {
       const invalidIdError = new Error('Invalid ID format');
       mockProductsService.getProductById.mockRejectedValue(invalidIdError);
 
-      await expect(controller.getProductById(-1)).rejects.toThrow(
-        HttpException,
+      await expectSpecificErrorOrTestErrorUnit(
+        () => controller.getProductById(-1),
+        (httpError) => {
+          expect(httpError).toBeInstanceOf(HttpException);
+          expect(httpError.getResponse()).toEqual({
+            error: 'Failed to fetch product',
+          });
+          expect(httpError.getStatus()).toBe(500);
+        },
       );
     });
 
@@ -175,7 +232,16 @@ describe('ProductsController', () => {
       const genericError = new Error('Database connection failed');
       mockProductsService.getProductById.mockRejectedValue(genericError);
 
-      await expect(controller.getProductById(1)).rejects.toThrow(HttpException);
+      await expectSpecificErrorOrTestErrorUnit(
+        () => controller.getProductById(1),
+        (httpError) => {
+          expect(httpError).toBeInstanceOf(HttpException);
+          expect(httpError.getResponse()).toEqual({
+            error: 'Failed to fetch product',
+          });
+          expect(httpError.getStatus()).toBe(500);
+        },
+      );
     });
 
     it('should handle ParseIntPipe validation (integration test)', async () => {
@@ -183,11 +249,14 @@ describe('ProductsController', () => {
       // but we can test the controller's expectation of receiving a number
       mockProductsService.getProductById.mockResolvedValue(mockProduct);
 
-      const result = await controller.getProductById(1);
-
-      expect(mockProductsService.getProductById).toHaveBeenCalledWith(1);
-      expect(typeof 1).toBe('number');
-      expect(result.data).toEqual(mockProduct);
+      await expectSuccessOrTestErrorUnit(
+        () => controller.getProductById(1),
+        (result) => {
+          expect(mockProductsService.getProductById).toHaveBeenCalledWith(1);
+          expect(typeof 1).toBe('number');
+          expect(result.data).toEqual(mockProduct);
+        },
+      );
     });
   });
 
@@ -195,21 +264,27 @@ describe('ProductsController', () => {
     it('should handle service returning null gracefully', async () => {
       mockProductsService.getRandomCoffeeProducts.mockResolvedValue(null);
 
-      const result = await controller.getFavoriteProducts();
-
-      expect(result).toEqual({
-        data: null,
-      });
+      await expectSuccessOrTestErrorUnit(
+        () => controller.getFavoriteProducts(),
+        (result) => {
+          expect(result).toEqual({
+            data: null,
+          });
+        },
+      );
     });
 
     it('should handle service returning undefined gracefully', async () => {
       mockProductsService.getAllProducts.mockResolvedValue(undefined);
 
-      const result = await controller.getAllProducts();
-
-      expect(result).toEqual({
-        data: undefined,
-      });
+      await expectSuccessOrTestErrorUnit(
+        () => controller.getAllProducts(),
+        (result) => {
+          expect(result).toEqual({
+            data: undefined,
+          });
+        },
+      );
     });
   });
 
@@ -218,13 +293,16 @@ describe('ProductsController', () => {
       const testData = [mockProduct];
       mockProductsService.getRandomCoffeeProducts.mockResolvedValue(testData);
 
-      const result = await controller.getFavoriteProducts();
-
-      expect(result).toHaveProperty('data');
-      expect(result.data).toEqual(testData);
-      expect(result).not.toHaveProperty('success'); // Removed as per requirements
-      expect(result).not.toHaveProperty('message');
-      expect(result).not.toHaveProperty('error');
+      await expectSuccessOrTestErrorUnit(
+        () => controller.getFavoriteProducts(),
+        (result) => {
+          expect(result).toHaveProperty('data');
+          expect(result.data).toEqual(testData);
+          expect(result).not.toHaveProperty('success'); // Removed as per requirements
+          expect(result).not.toHaveProperty('message');
+          expect(result).not.toHaveProperty('error');
+        },
+      );
     });
   });
 });

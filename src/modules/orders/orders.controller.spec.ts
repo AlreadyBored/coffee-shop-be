@@ -4,9 +4,15 @@ import { OrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from '../../common/dto/order.dto';
 import { User, PaymentMethod } from '../../entities/user.entity';
+import {
+  expectSuccessOrTestErrorUnit,
+  expectSpecificErrorOrTestErrorUnit,
+  mockSimulateRandomError,
+} from '../../../test/helpers/unit-test.helper';
 
 describe('OrdersController', () => {
   let controller: OrdersController;
+  let mockSimulateRandomErrorFn: jest.MockedFunction<() => void>;
 
   const mockUser: User = {
     id: 1,
@@ -47,6 +53,9 @@ describe('OrdersController', () => {
   };
 
   beforeEach(async () => {
+    // Mock the error simulation function
+    mockSimulateRandomErrorFn = mockSimulateRandomError();
+
     const module: TestingModule = await Test.createTestingModule({
       controllers: [OrdersController],
       providers: [
@@ -61,6 +70,7 @@ describe('OrdersController', () => {
 
     // Clear all mocks before each test
     jest.clearAllMocks();
+    mockSimulateRandomErrorFn.mockClear();
   });
 
   it('should be defined', () => {
@@ -71,49 +81,52 @@ describe('OrdersController', () => {
     it('should confirm order with authenticated user', async () => {
       mockOrdersService.confirmOrder.mockResolvedValue(mockOrderResponse);
 
-      const result = await controller.confirmOrder(
-        mockCreateOrderDto,
-        mockUser,
+      await expectSuccessOrTestErrorUnit(
+        () => controller.confirmOrder(mockCreateOrderDto, mockUser),
+        (result) => {
+          expect(mockOrdersService.confirmOrder).toHaveBeenCalledWith(
+            mockCreateOrderDto,
+            mockUser,
+          );
+          expect(result).toEqual({
+            data: mockOrderResponse,
+          });
+        },
       );
-
-      expect(mockOrdersService.confirmOrder).toHaveBeenCalledWith(
-        mockCreateOrderDto,
-        mockUser,
-      );
-      expect(result).toEqual({
-        data: mockOrderResponse,
-      });
     });
 
     it('should confirm order with anonymous user (null)', async () => {
       mockOrdersService.confirmOrder.mockResolvedValue(mockOrderResponse);
 
-      const result = await controller.confirmOrder(mockCreateOrderDto, null);
-
-      expect(mockOrdersService.confirmOrder).toHaveBeenCalledWith(
-        mockCreateOrderDto,
-        null,
+      await expectSuccessOrTestErrorUnit(
+        () => controller.confirmOrder(mockCreateOrderDto, null),
+        (result) => {
+          expect(mockOrdersService.confirmOrder).toHaveBeenCalledWith(
+            mockCreateOrderDto,
+            null,
+          );
+          expect(result).toEqual({
+            data: mockOrderResponse,
+          });
+        },
       );
-      expect(result).toEqual({
-        data: mockOrderResponse,
-      });
     });
 
     it('should confirm order with anonymous user (undefined)', async () => {
       mockOrdersService.confirmOrder.mockResolvedValue(mockOrderResponse);
 
-      const result = await controller.confirmOrder(
-        mockCreateOrderDto,
-        undefined,
+      await expectSuccessOrTestErrorUnit(
+        () => controller.confirmOrder(mockCreateOrderDto, undefined),
+        (result) => {
+          expect(mockOrdersService.confirmOrder).toHaveBeenCalledWith(
+            mockCreateOrderDto,
+            undefined,
+          );
+          expect(result).toEqual({
+            data: mockOrderResponse,
+          });
+        },
       );
-
-      expect(mockOrdersService.confirmOrder).toHaveBeenCalledWith(
-        mockCreateOrderDto,
-        undefined,
-      );
-      expect(result).toEqual({
-        data: mockOrderResponse,
-      });
     });
 
     it('should handle empty order items', async () => {
@@ -126,18 +139,21 @@ describe('OrdersController', () => {
         orderId: 'empty-order-uuid',
       });
 
-      const result = await controller.confirmOrder(emptyOrderDto, mockUser);
-
-      expect(mockOrdersService.confirmOrder).toHaveBeenCalledWith(
-        emptyOrderDto,
-        mockUser,
-      );
-      expect(result).toEqual({
-        data: {
-          message: 'Your order is confirmed',
-          orderId: 'empty-order-uuid',
+      await expectSuccessOrTestErrorUnit(
+        () => controller.confirmOrder(emptyOrderDto, mockUser),
+        (result) => {
+          expect(mockOrdersService.confirmOrder).toHaveBeenCalledWith(
+            emptyOrderDto,
+            mockUser,
+          );
+          expect(result).toEqual({
+            data: {
+              message: 'Your order is confirmed',
+              orderId: 'empty-order-uuid',
+            },
+          });
         },
-      });
+      );
     });
 
     it('should handle order with single item', async () => {
@@ -154,25 +170,32 @@ describe('OrdersController', () => {
       };
       mockOrdersService.confirmOrder.mockResolvedValue(mockOrderResponse);
 
-      const result = await controller.confirmOrder(
-        singleItemOrderDto,
-        mockUser,
+      await expectSuccessOrTestErrorUnit(
+        () => controller.confirmOrder(singleItemOrderDto, mockUser),
+        (result) => {
+          expect(mockOrdersService.confirmOrder).toHaveBeenCalledWith(
+            singleItemOrderDto,
+            mockUser,
+          );
+          expect(result.data).toEqual(mockOrderResponse);
+        },
       );
-
-      expect(mockOrdersService.confirmOrder).toHaveBeenCalledWith(
-        singleItemOrderDto,
-        mockUser,
-      );
-      expect(result.data).toEqual(mockOrderResponse);
     });
 
     it('should throw HttpException when service throws error', async () => {
       const serviceError = new Error('Order processing failed');
       mockOrdersService.confirmOrder.mockRejectedValue(serviceError);
 
-      await expect(
-        controller.confirmOrder(mockCreateOrderDto, mockUser),
-      ).rejects.toThrow(HttpException);
+      await expectSpecificErrorOrTestErrorUnit(
+        () => controller.confirmOrder(mockCreateOrderDto, mockUser),
+        (httpError) => {
+          expect(httpError).toBeInstanceOf(HttpException);
+          expect(httpError.getResponse()).toEqual({
+            error: 'Failed to confirm order',
+          });
+          expect(httpError.getStatus()).toBe(500);
+        },
+      );
     });
 
     it('should throw HttpException for validation errors', async () => {
@@ -180,9 +203,16 @@ describe('OrdersController', () => {
       validationError.name = 'BadRequestException';
       mockOrdersService.confirmOrder.mockRejectedValue(validationError);
 
-      await expect(
-        controller.confirmOrder(mockCreateOrderDto, mockUser),
-      ).rejects.toThrow(HttpException);
+      await expectSpecificErrorOrTestErrorUnit(
+        () => controller.confirmOrder(mockCreateOrderDto, mockUser),
+        (httpError) => {
+          expect(httpError).toBeInstanceOf(HttpException);
+          expect(httpError.getResponse()).toEqual({
+            error: 'Failed to confirm order',
+          });
+          expect(httpError.getStatus()).toBe(500);
+        },
+      );
     });
 
     it('should throw HttpException for not found errors', async () => {
@@ -190,9 +220,16 @@ describe('OrdersController', () => {
       notFoundError.name = 'NotFoundException';
       mockOrdersService.confirmOrder.mockRejectedValue(notFoundError);
 
-      await expect(
-        controller.confirmOrder(mockCreateOrderDto, mockUser),
-      ).rejects.toThrow(HttpException);
+      await expectSpecificErrorOrTestErrorUnit(
+        () => controller.confirmOrder(mockCreateOrderDto, mockUser),
+        (httpError) => {
+          expect(httpError).toBeInstanceOf(HttpException);
+          expect(httpError.getResponse()).toEqual({
+            error: 'Failed to confirm order',
+          });
+          expect(httpError.getStatus()).toBe(500);
+        },
+      );
     });
   });
 
@@ -200,27 +237,27 @@ describe('OrdersController', () => {
     it('should handle service returning null', async () => {
       mockOrdersService.confirmOrder.mockResolvedValue(null);
 
-      const result = await controller.confirmOrder(
-        mockCreateOrderDto,
-        mockUser,
+      await expectSuccessOrTestErrorUnit(
+        () => controller.confirmOrder(mockCreateOrderDto, mockUser),
+        (result) => {
+          expect(result).toEqual({
+            data: null,
+          });
+        },
       );
-
-      expect(result).toEqual({
-        data: null,
-      });
     });
 
     it('should handle service returning undefined', async () => {
       mockOrdersService.confirmOrder.mockResolvedValue(undefined);
 
-      const result = await controller.confirmOrder(
-        mockCreateOrderDto,
-        mockUser,
+      await expectSuccessOrTestErrorUnit(
+        () => controller.confirmOrder(mockCreateOrderDto, mockUser),
+        (result) => {
+          expect(result).toEqual({
+            data: undefined,
+          });
+        },
       );
-
-      expect(result).toEqual({
-        data: undefined,
-      });
     });
 
     it('should preserve custom error messages from service', async () => {
@@ -228,9 +265,16 @@ describe('OrdersController', () => {
       customError.name = 'BadRequestException';
       mockOrdersService.confirmOrder.mockRejectedValue(customError);
 
-      await expect(
-        controller.confirmOrder(mockCreateOrderDto, mockUser),
-      ).rejects.toThrow(HttpException);
+      await expectSpecificErrorOrTestErrorUnit(
+        () => controller.confirmOrder(mockCreateOrderDto, mockUser),
+        (httpError) => {
+          expect(httpError).toBeInstanceOf(HttpException);
+          expect(httpError.getResponse()).toEqual({
+            error: 'Failed to confirm order',
+          });
+          expect(httpError.getStatus()).toBe(500);
+        },
+      );
     });
   });
 
@@ -238,34 +282,46 @@ describe('OrdersController', () => {
     it('should return data wrapped in ApiResponse format', async () => {
       mockOrdersService.confirmOrder.mockResolvedValue(mockOrderResponse);
 
-      const result = await controller.confirmOrder(
-        mockCreateOrderDto,
-        mockUser,
+      await expectSuccessOrTestErrorUnit(
+        () => controller.confirmOrder(mockCreateOrderDto, mockUser),
+        (result) => {
+          expect(result).toHaveProperty('data');
+          expect(result.data).toEqual(mockOrderResponse);
+          expect(result).not.toHaveProperty('message');
+          expect(result).not.toHaveProperty('success'); // Removed as per requirements
+          expect(result).not.toHaveProperty('error');
+        },
       );
-
-      expect(result).toHaveProperty('data');
-      expect(result.data).toEqual(mockOrderResponse);
-      expect(result).not.toHaveProperty('message');
-      expect(result).not.toHaveProperty('success'); // Removed as per requirements
-      expect(result).not.toHaveProperty('error');
     });
 
     it('should maintain consistent response structure regardless of user authentication', async () => {
       mockOrdersService.confirmOrder.mockResolvedValue(mockOrderResponse);
 
-      const authenticatedResult = await controller.confirmOrder(
-        mockCreateOrderDto,
-        mockUser,
-      );
-      const anonymousResult = await controller.confirmOrder(
-        mockCreateOrderDto,
-        null,
+      let authenticatedResult: any;
+      let anonymousResult: any;
+
+      // Test authenticated user
+      await expectSuccessOrTestErrorUnit(
+        () => controller.confirmOrder(mockCreateOrderDto, mockUser),
+        (result) => {
+          authenticatedResult = result;
+        },
       );
 
-      expect(authenticatedResult).toHaveProperty('data');
-      expect(anonymousResult).toHaveProperty('data');
+      // Test anonymous user
+      await expectSuccessOrTestErrorUnit(
+        () => controller.confirmOrder(mockCreateOrderDto, null),
+        (result) => {
+          anonymousResult = result;
+        },
+      );
 
-      expect(authenticatedResult.data).toEqual(anonymousResult.data);
+      // Only compare if both calls succeeded (not random errors)
+      if (authenticatedResult && anonymousResult) {
+        expect(authenticatedResult).toHaveProperty('data');
+        expect(anonymousResult).toHaveProperty('data');
+        expect(authenticatedResult.data).toEqual(anonymousResult.data);
+      }
     });
   });
 
@@ -273,40 +329,46 @@ describe('OrdersController', () => {
     it('should handle requests with valid JWT token', async () => {
       mockOrdersService.confirmOrder.mockResolvedValue(mockOrderResponse);
 
-      const result = await controller.confirmOrder(
-        mockCreateOrderDto,
-        mockUser,
+      await expectSuccessOrTestErrorUnit(
+        () => controller.confirmOrder(mockCreateOrderDto, mockUser),
+        (result) => {
+          expect(mockOrdersService.confirmOrder).toHaveBeenCalledWith(
+            mockCreateOrderDto,
+            mockUser,
+          );
+          expect(result.data).toEqual(mockOrderResponse);
+        },
       );
-
-      expect(mockOrdersService.confirmOrder).toHaveBeenCalledWith(
-        mockCreateOrderDto,
-        mockUser,
-      );
-      expect(result.data).toEqual(mockOrderResponse);
     });
 
     it('should handle requests without JWT token', async () => {
       mockOrdersService.confirmOrder.mockResolvedValue(mockOrderResponse);
 
-      const result = await controller.confirmOrder(mockCreateOrderDto, null);
-
-      expect(mockOrdersService.confirmOrder).toHaveBeenCalledWith(
-        mockCreateOrderDto,
-        null,
+      await expectSuccessOrTestErrorUnit(
+        () => controller.confirmOrder(mockCreateOrderDto, null),
+        (result) => {
+          expect(mockOrdersService.confirmOrder).toHaveBeenCalledWith(
+            mockCreateOrderDto,
+            null,
+          );
+          expect(result.data).toEqual(mockOrderResponse);
+        },
       );
-      expect(result.data).toEqual(mockOrderResponse);
     });
 
     it('should handle requests with invalid JWT token (treated as anonymous)', async () => {
       mockOrdersService.confirmOrder.mockResolvedValue(mockOrderResponse);
 
-      const result = await controller.confirmOrder(mockCreateOrderDto, null);
-
-      expect(mockOrdersService.confirmOrder).toHaveBeenCalledWith(
-        mockCreateOrderDto,
-        null,
+      await expectSuccessOrTestErrorUnit(
+        () => controller.confirmOrder(mockCreateOrderDto, null),
+        (result) => {
+          expect(mockOrdersService.confirmOrder).toHaveBeenCalledWith(
+            mockCreateOrderDto,
+            null,
+          );
+          expect(result.data).toEqual(mockOrderResponse);
+        },
       );
-      expect(result.data).toEqual(mockOrderResponse);
     });
   });
 });
