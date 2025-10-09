@@ -95,16 +95,52 @@ The API documentation includes:
 - `GET /auth/profile` - Get current user profile (protected)
 
 ### Products
-- `GET /products/favorites` - Get 3 random coffee products for main page
+- `GET /products/favorites` - Get 3 random coffee products for main page (without sizes and additives)
 - `GET /products` - Get all products (without sizes and additives)
 - `GET /products/:id` - Get full product details by ID
 
 ### Orders
 - `POST /orders/confirm` - Confirm order (anonymous or authenticated)
-- `POST /orders/confirm-auth` - Confirm order (authenticated users only)
 
 ### General
 - `GET /` - API information and available endpoints
+
+## 🧪 Error Simulation
+
+The API includes built-in error simulation for testing purposes. All product and order endpoints have a **configurable chance** (default 25%) of returning a simulated 500 Internal Server Error.
+
+### Test Error Response Format
+```json
+{
+  "error": "Simulated API error for testing purposes",
+  "isTestError": true,
+  "timestamp": "2023-10-07T12:00:00.000Z"
+}
+```
+
+### Configuration:
+- **Default Probability**: 25% chance on each API call
+- **Environment Variable**: Set `TEST_ERROR_PROBABILITY` (0.0-1.0) to customize
+- **ConfigService Integration**: Managed through NestJS configuration system
+- **Programmatic Override**: Pass custom probability to `simulateRandomError(0.1)` for 10%
+
+### Key Features:
+- **Configurable Occurrence**: Adjustable probability via environment variable or parameter
+- **Identifiable**: Contains `isTestError: true` flag
+- **Realistic**: Returns actual HTTP 500 status code
+- **Timestamped**: Includes error timestamp
+
+### Affected Endpoints:
+- `GET /products/favorites`
+- `GET /products`
+- `GET /products/:id`
+- `POST /orders/confirm`
+
+### Testing Considerations:
+- E2E tests are designed to handle these simulated errors gracefully
+- Tests will accept simulated errors as valid responses
+- Tests will fail only on unexpected 500 errors (without `isTestError: true`)
+- Use multiple test runs or retry logic when testing success scenarios
 
 ## 🔐 Authentication
 
@@ -200,14 +236,6 @@ Secure authentication system with password hashing using bcrypt and JWT token ge
 
 ### Swagger Integration
 Complete API documentation with interactive testing capabilities using Swagger UI.
-
-## 🚦 CORS Configuration
-
-The API is configured to accept requests from:
-- `http://localhost:3000`
-- `http://localhost:3001`
-- `http://127.0.0.1:3000`
-- `http://127.0.0.1:3001`
 
 ## 📝 Environment
 

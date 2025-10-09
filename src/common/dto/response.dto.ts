@@ -76,7 +76,8 @@ export class OrderResponseDto extends BaseResponseDto<OrderConfirmationDto> {
 export class ApiEndpointsDto {
   @ApiProperty({
     example: {
-      'GET /products/favorites': 'Get 3 random coffee products for main page',
+      'GET /products/favorites':
+        'Get 3 random coffee products for main page (without sizes and additives)',
       'GET /products': 'Get all products (without sizes and additives)',
       'GET /products/:id': 'Get full product details by ID',
     },
@@ -95,7 +96,6 @@ export class ApiEndpointsDto {
   @ApiProperty({
     example: {
       'POST /orders/confirm': 'Confirm order (anonymous or authenticated)',
-      'POST /orders/confirm-auth': 'Confirm order (authenticated only)',
     },
   })
   orders: Record<string, string>;

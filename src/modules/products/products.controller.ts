@@ -17,16 +17,19 @@ import { Product } from '../../entities/product.entity';
 import { ApiResponse } from '../../common/interfaces/api.interfaces';
 import type { ProductListItem } from '../../common/interfaces/api.interfaces';
 import {
-  ProductsListResponseDto,
   ProductListItemsResponseDto,
   ProductResponseDto,
   ErrorResponseDto,
 } from '../../common/dto/response.dto';
+import { ErrorSimulationService } from '../../common/services/error-simulation.service';
 
 @ApiTags('Products')
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(
+    private readonly productsService: ProductsService,
+    private readonly errorSimulationService: ErrorSimulationService,
+  ) {}
 
   /**
    * GET /products/favorites
@@ -37,14 +40,17 @@ export class ProductsController {
   @SwaggerApiResponse({
     status: 200,
     description: 'Favorite products retrieved successfully',
-    type: ProductsListResponseDto,
+    type: ProductListItemsResponseDto,
   })
   @SwaggerApiResponse({
     status: 500,
     description: 'Internal server error',
     type: ErrorResponseDto,
   })
-  async getFavoriteProducts(): Promise<ApiResponse<Product[]>> {
+  async getFavoriteProducts(): Promise<ApiResponse<ProductListItem[]>> {
+    // Simulate random API errors for testing
+    this.errorSimulationService.simulateRandomError();
+
     try {
       const products = await this.productsService.getRandomCoffeeProducts();
       return {
@@ -78,6 +84,9 @@ export class ProductsController {
     type: ErrorResponseDto,
   })
   async getAllProducts(): Promise<ApiResponse<ProductListItem[]>> {
+    // Simulate random API errors for testing
+    this.errorSimulationService.simulateRandomError();
+
     try {
       const products = await this.productsService.getAllProducts();
       return {
@@ -118,6 +127,9 @@ export class ProductsController {
   async getProductById(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<ApiResponse<Product>> {
+    // Simulate random API errors for testing
+    this.errorSimulationService.simulateRandomError();
+
     try {
       const product = await this.productsService.getProductById(id);
       return {

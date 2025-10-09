@@ -21,17 +21,6 @@ async function bootstrap() {
     }),
   );
 
-  app.enableCors({
-    origin: [
-      `http://localhost:${port + 1}`,
-      `http://localhost:${port}`,
-      `http://127.0.0.1:${port + 1}`,
-      `http://127.0.0.1:${port}`,
-    ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  });
-
   // Swagger configuration
   if (swaggerEnabled) {
     const config = new DocumentBuilder()
