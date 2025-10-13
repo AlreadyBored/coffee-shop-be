@@ -8,8 +8,7 @@ import { SeedService } from './common/services/seed.service';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: {
-      origin: true,
-      credentials: true,
+      origin: false,
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD'],
       allowedHeaders: '*',
       exposedHeaders: '*',
